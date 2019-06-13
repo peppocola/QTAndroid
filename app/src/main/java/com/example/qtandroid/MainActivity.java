@@ -1,9 +1,5 @@
 package com.example.qtandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.io.File;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
@@ -67,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(select.getCheckedRadioButtonId()==R.id.newcluster){
                     openNewCluster();
-                }else openFileCluster();
+                } else if (select.getCheckedRadioButtonId() == R.id.filecluster) openFileCluster();
 
             }
         });
     }
 
-    protected void checkRadio(View v){
+    public void checkRadio(View v) {
         int radioId = select.getCheckedRadioButtonId();
         selected = findViewById(radioId);
         Toast.makeText(this, "Hai selezionato: " + selected.getText(), Toast.LENGTH_SHORT).show();
