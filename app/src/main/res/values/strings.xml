@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">QTAndroid</string>
+    <string name="welcome">Benvenuto in QTAndroid</string>
+    <string name="day_night">Day/Night</string>
+    <string name="description">"QTAndroid è un client che permette di visualizzare i risultati di un clustering effettuato su server direttamente dallo smartphone!"</string>
+    <string name="discover">"Dettagli"</string>
+    <string name="details">"Il clustering effettuato da QTAndroid utilizza l'algoritmo del QualityThreshold (QT)."</string>
+    <string name="start">"Inizia subito!"</string>
+    <string name="instructions">"Puoi scegliere di visualizzare un clustering già salvato su server, inserendo il nome del file. Oppure puoi effettuare un nuovo clustering"</string>
+    <string name="newcluster">"Crea un nuovo clustering"</string>
+    <string name="selectTable">"Seleziona il nome della tabella:"</string>
+    <string name="selectRadius">"Inserisci il raggio:"</string>
+    <string name="filecluster">"Carica da file"</string>
+    <string name="esegui"> "Vai"</string>
+    <string name="defaultValue"> "0.00"</string>
+    <string name="defaultString"> "PlayTennis"</string>
+</resources>

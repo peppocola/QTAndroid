@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundcolor">@color/backgroundday</item>
+        <item name="cardbackground">@color/cardbackgroundday</item>
+        <item name="textcolor">@color/textday</item>
+        <item name="tintcolor">@color/tintday</item>
+        <item name="buttoncolor">@color/buttonday</item>
+    </style>
+
+    <!-- Dark application theme. -->
+    <style name="DarkMode" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimarynight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarknight</item>
+        <item name="colorAccent">@color/colorAccentnight</item>
+        <item name="backgroundcolor">@color/backgroundnight</item>
+        <item name="cardbackground">@color/cardbackgroundnight</item>
+        <item name="textcolor">@color/textnight</item>
+        <item name="tintcolor">@color/tintnight</item>
+        <item name="buttoncolor">@color/buttonnight</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>
