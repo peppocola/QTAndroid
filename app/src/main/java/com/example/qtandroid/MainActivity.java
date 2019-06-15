@@ -1,7 +1,7 @@
 package com.example.qtandroid;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,33 +41,36 @@ public class MainActivity extends AppCompatActivity {
         ThemeUtils.listen(MainActivity.this, DarkSwitch);
 
         buttonDetails = findViewById(R.id.details);
-        setDetailsButton(buttonDetails);
+        setDetailsButton(buttonDetails, this);
 
         select = findViewById(R.id.select);
         buttonCluster = findViewById(R.id.esegui);
-        setClusterButton(buttonCluster);
+        setClusterButton(buttonCluster, this);
 
-        ConnectionUtils.checkConnection(MainActivity.this);
+        //ConnectionUtils.checkConnection(MainActivity.this); in the main screen connection is not necessary
 
 
     }
 
-    protected void setDetailsButton(Button button){
+    protected void setDetailsButton(Button button, final Context context) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDetails();
+                Details.openDetails(context);
             }
         });
     }
 
-    protected void setClusterButton(Button button){
+    protected void setClusterButton(Button button, final Context context) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(select.getCheckedRadioButtonId()==R.id.newcluster){
-                    openNewCluster();
-                } else if (select.getCheckedRadioButtonId() == R.id.filecluster) openFileCluster();
+                if (ConnectionUtils.absentConnection(MainActivity.this)) {
+                    ConnectionUtils.openConnectionDialog(MainActivity.this);
+                } else if (select.getCheckedRadioButtonId() == R.id.newcluster) {
+                    NewCluster.openNewCluster(context);
+                } else if (select.getCheckedRadioButtonId() == R.id.filecluster)
+                    FileCluster.openFileCluster(context);
 
             }
         });
@@ -78,23 +81,6 @@ public class MainActivity extends AppCompatActivity {
         selected = findViewById(radioId);
         Toast.makeText(this, "Hai selezionato: " + selected.getText(), Toast.LENGTH_SHORT).show();
 
-    }
-
-
-    protected void openDetails(){
-        Intent i = new Intent(this, Details.class);
-        startActivity(i);
-
-    }
-
-    protected void openNewCluster(){
-        Intent i = new Intent( this, NewCluster.class);
-        startActivity(i);
-    }
-
-    protected void openFileCluster(){
-        Intent i = new Intent( this, FileCluster.class);
-        startActivity(i);
     }
 
     @Override

@@ -6,7 +6,7 @@
     <string name="discover">"Dettagli"</string>
     <string name="details">"Il clustering effettuato da QTAndroid utilizza l'algoritmo del QualityThreshold (QT)."</string>
     <string name="start">"Inizia subito!"</string>
-    <string name="instructions">"Puoi scegliere di visualizzare un clustering già salvato su server, inserendo il nome del file. Oppure puoi effettuare un nuovo clustering"</string>
+    <string name="instructions">"Puoi scegliere di visualizzare un clustering già salvato su server inserendo il nome del file. Oppure puoi effettuare un nuovo clustering.\n(Connessione ad internet richiesta)"</string>
     <string name="newcluster">"Crea un nuovo clustering"</string>
     <string name="selectTable">"Seleziona il nome della tabella:"</string>
     <string name="selectRadius">"Inserisci il raggio:"</string>

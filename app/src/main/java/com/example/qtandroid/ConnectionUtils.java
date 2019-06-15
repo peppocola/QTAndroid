@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public final class ConnectionUtils {
+final class ConnectionUtils {
 
     static void openConnectionDialog(@NonNull final Context context) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -26,6 +26,29 @@ public final class ConnectionUtils {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         checkConnection(context);
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    static void openConnectionDialog(@NonNull final Context context, Class<?> cls) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder
+                .setTitle(R.string.alertConnection)
+                .setMessage(R.string.alertConnectionMessage)
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ((AppCompatActivity) context).finish();
+                    }
+                })
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checkConnection(context);
+
                     }
                 });
 

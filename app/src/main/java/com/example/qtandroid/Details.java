@@ -1,12 +1,15 @@
 package com.example.qtandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
+import android.content.Context;
 import android.os.Bundle;
-import android.widget.Switch;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Details extends AppCompatActivity {
+
+    public static void openDetails(Context context) {
+        ActivityUtils.open(Details.class, context);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
