@@ -8,7 +8,7 @@ public final class ActivityUtils {
     private ActivityUtils() {
     }
 
-    static void open(Class<?> activity, Context context) {
+    public static void open(Class<?> activity, Context context) {
         Intent i = new Intent(context, activity);
         context.startActivity(i);
     }

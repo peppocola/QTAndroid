@@ -15,7 +15,7 @@ final class ConnectionUtils {
     private ConnectionUtils() {
     }
 
-    static void openConnectionDialog(@NonNull final Context context) {
+    public static void openConnectionDialog(@NonNull final Context context) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder
                 .setTitle(R.string.alertConnection)
@@ -37,7 +37,7 @@ final class ConnectionUtils {
         alertDialog.show();
     }
 
-    static void openConnectionDialog(@NonNull final Context context, final RadioGroup select) {
+    public static void openConnectionDialog(@NonNull final Context context, final RadioGroup select) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder
                 .setTitle(R.string.alertConnection)
@@ -52,7 +52,7 @@ final class ConnectionUtils {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (ConnectionUtils.absentConnection(context)) {
-                            ConnectionUtils.openConnectionDialog(context);
+                            ConnectionUtils.openConnectionDialog(context, select);
                         } else {
                             if (select.getCheckedRadioButtonId() == R.id.newcluster) {
                                 NewCluster.openNewCluster(context);
@@ -79,16 +79,7 @@ final class ConnectionUtils {
         }
     }
 
-    /* DEPRECATED
-    static boolean absentConnection(@NonNull Context context) {
-          ConnectivityManager cm =
-                  (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-          NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-          return !(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
-      }
-  */
-    static void checkConnection(Context context) {
+    public static void checkConnection(Context context) {
         if (ConnectionUtils.absentConnection(context)) {
             ConnectionUtils.openConnectionDialog(context);
         }

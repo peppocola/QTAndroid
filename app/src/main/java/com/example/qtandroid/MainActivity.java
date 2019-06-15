@@ -47,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
         buttonCluster = findViewById(R.id.esegui);
         setClusterButton(buttonCluster, MainActivity.this);
 
-        //ConnectionUtils.checkConnection(MainActivity.this); in the main screen connection is not necessary
-
-
     }
 
     protected void setDetailsButton(Button button, final Context context) {
@@ -98,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         int radioId = select.getCheckedRadioButtonId();
         selected = findViewById(radioId);
         Toast.makeText(this, "Hai selezionato: " + selected.getText(), Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
