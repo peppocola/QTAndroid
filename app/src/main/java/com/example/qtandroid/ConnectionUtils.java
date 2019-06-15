@@ -25,9 +25,7 @@ public final class ConnectionUtils {
                 .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (!absentConnection(context)) {
-                            checkConnection(context); //here some problems
-                        }
+                        checkConnection(context);
                     }
                 });
 
