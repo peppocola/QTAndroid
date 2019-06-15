@@ -1,14 +1,10 @@
 package com.example.qtandroid;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -18,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         DarkSwitch = findViewById(R.id.DarkSwitch);
         DarkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode()==MODE_NIGHT_YES);
 
-        listen();
+        ThemeUtils.listen(MainActivity.this, DarkSwitch);
 
         buttonDetails = findViewById(R.id.details);
         setDetailsButton(buttonDetails);
@@ -52,21 +47,10 @@ public class MainActivity extends AppCompatActivity {
         buttonCluster = findViewById(R.id.esegui);
         setClusterButton(buttonCluster);
 
-        if (absentConnection()) {
-            openConnectionDialog();
-        }
+        ConnectionUtils.checkConnection(MainActivity.this);
 
 
     }
-
-    protected boolean absentConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return !(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
-    }
-
 
     protected void setDetailsButton(Button button){
         button.setOnClickListener(new View.OnClickListener() {
@@ -111,46 +95,6 @@ public class MainActivity extends AppCompatActivity {
     protected void openFileCluster(){
         Intent i = new Intent( this, FileCluster.class);
         startActivity(i);
-    }
-
-
-    public void listen(){
-        DarkSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-                    recreate();
-                }else {
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
-                    recreate();
-                }
-            }
-        });
-    }
-
-    protected void openConnectionDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder
-                .setTitle(R.string.alertConnection)
-                .setMessage(R.string.alertConnectionMessage)
-                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (!absentConnection()) {
-                            openConnectionDialog();
-                        }
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     @Override
