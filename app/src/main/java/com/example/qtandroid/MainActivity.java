@@ -1,6 +1,10 @@
 package com.example.qtandroid;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -19,14 +24,16 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 public class MainActivity extends AppCompatActivity {
 
     private Switch DarkSwitch;
-    private Button buttonDetails;
 
     private RadioGroup select;
     private RadioButton selected;
-    private Button buttonCluster;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Button buttonDetails;
+        Button buttonCluster;
 
         setTheme(ThemeUtils.defaultTheme());
 
@@ -45,7 +52,19 @@ public class MainActivity extends AppCompatActivity {
         buttonCluster = findViewById(R.id.esegui);
         setClusterButton(buttonCluster);
 
+        if (absentConnection()) {
+            openConnectionDialog();
+        }
 
+
+    }
+
+    protected boolean absentConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return !(activeNetwork != null && activeNetwork.isConnectedOrConnecting());
     }
 
 
@@ -110,7 +129,50 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    protected void openConnectionDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder
+                .setTitle(R.string.alertConnection)
+                .setMessage(R.string.alertConnectionMessage)
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (!absentConnection()) {
+                            openConnectionDialog();
+                        }
+                    }
+                });
 
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder
+                .setMessage(R.string.exit)
+                .setCancelable(true)
+                .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
 
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }

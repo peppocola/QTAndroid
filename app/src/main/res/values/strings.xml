@@ -14,4 +14,13 @@
     <string name="esegui"> "Vai"</string>
     <string name="defaultValue"> "0.00"</string>
     <string name="defaultString"> "PlayTennis"</string>
+
+    <string name="alertConnection">"Connessione Assente"</string>
+    <string name="alertConnectionMessage">"Non posso contattare il server senza una connessione ad internet!"</string>
+    <string name="retry">"Riprova"</string>
+    <string name="close">"Termina"</string>
+
+    <string name="exit">"Vuoi uscire dall'applicazione?"</string>
+    <string name="si">"Sì"</string>
+    <string name="no">"No"</string>
 </resources>
