@@ -23,4 +23,7 @@
     <string name="exit">"Vuoi uscire dall'applicazione?"</string>
     <string name="si">"Sì"</string>
     <string name="no">"No"</string>
+    <string name="ok">"OK"</string>
+
+    <string name="noSelect">"Seleziona un'opzione!"</string>
 </resources>

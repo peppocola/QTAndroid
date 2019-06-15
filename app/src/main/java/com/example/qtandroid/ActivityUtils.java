@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 public final class ActivityUtils {
-    public static void open(Class<?> activity, Context context) {
+
+    private ActivityUtils() {
+    }
+
+    static void open(Class<?> activity, Context context) {
         Intent i = new Intent(context, activity);
         context.startActivity(i);
     }

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
-public class ThemeUtils {
+public final class ThemeUtils {
 
 
     public static int defaultTheme() {

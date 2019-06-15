@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
         ThemeUtils.listen(MainActivity.this, DarkSwitch);
 
         buttonDetails = findViewById(R.id.details);
-        setDetailsButton(buttonDetails, this);
+        setDetailsButton(buttonDetails, MainActivity.this);
 
         select = findViewById(R.id.select);
         buttonCluster = findViewById(R.id.esegui);
-        setClusterButton(buttonCluster, this);
+        setClusterButton(buttonCluster, MainActivity.this);
 
         //ConnectionUtils.checkConnection(MainActivity.this); in the main screen connection is not necessary
 
@@ -65,13 +65,31 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ConnectionUtils.absentConnection(MainActivity.this)) {
-                    ConnectionUtils.openConnectionDialog(MainActivity.this);
-                } else if (select.getCheckedRadioButtonId() == R.id.newcluster) {
-                    NewCluster.openNewCluster(context);
-                } else if (select.getCheckedRadioButtonId() == R.id.filecluster)
-                    FileCluster.openFileCluster(context);
 
+                boolean isNewCluster = select.getCheckedRadioButtonId() == R.id.newcluster;
+                boolean isFileCluster = select.getCheckedRadioButtonId() == R.id.filecluster;
+
+                if (!(isNewCluster || isFileCluster)) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder
+                            .setMessage(R.string.noSelect)
+                            .setCancelable(true)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                } else if (ConnectionUtils.absentConnection(MainActivity.this)) {
+                    ConnectionUtils.openConnectionDialog(MainActivity.this, select);
+                } else if (isNewCluster) {
+                    NewCluster.openNewCluster(context);
+                } else if (isFileCluster) {
+                    FileCluster.openFileCluster(context);
+                }
             }
         });
     }
