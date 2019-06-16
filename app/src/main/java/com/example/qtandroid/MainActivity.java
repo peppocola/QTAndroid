@@ -26,12 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup select;
     private RadioButton selected;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Button buttonDetails;
-        Button buttonCluster;
 
         setTheme(ThemeUtils.defaultTheme());
 
@@ -42,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         DarkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode()==MODE_NIGHT_YES);
 
         ThemeUtils.listen(MainActivity.this, DarkSwitch);
+
+        Button buttonDetails;
+        Button buttonCluster;
 
         buttonDetails = findViewById(R.id.details);
         setDetailsButton(buttonDetails, MainActivity.this);

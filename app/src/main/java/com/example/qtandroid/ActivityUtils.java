@@ -12,4 +12,10 @@ public final class ActivityUtils {
         Intent i = new Intent(context, activity);
         context.startActivity(i);
     }
+
+    public static void openWithParams(Class<?> activity, Context context) {
+        Intent i = new Intent(context, activity);
+        context.startActivity(i);
+    }
+
 }
