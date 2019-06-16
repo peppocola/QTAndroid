@@ -13,7 +13,14 @@ public class Contacts extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(ThemeUtils.defaultTheme());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 }
