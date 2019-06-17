@@ -14,14 +14,21 @@ public class ConnectionHandler {
 
     public ConnectionHandler() throws UnknownHostException {
         InetAddress add = InetAddress.getByName("127.0.0.1");
+        System.out.println("addr = " + add);
         try {
+            System.out.println("PRIMA");
             Socket s = new Socket(add, 8080);
+            System.out.println(s);
             out = new ObjectOutputStream(s.getOutputStream());
             in = new ObjectInputStream(s.getInputStream());
 
         } catch (IOException e) {
+            System.out.println("IOEXCEPTION");
             System.out.println(e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exception");
+            System.out.println("messaggio " + e.getMessage());
         }
     }
 
@@ -50,7 +57,7 @@ public class ConnectionHandler {
         out.writeObject(radius);
         String result = (String) in.readObject();
         if (result.equals("OK")) {
-            result = "Number of Clusters:" + in.readObject();
+            result = "Number of Clusters:" + in.readObject() + "\n";
             result += (String) in.readObject();
             return result;
         } else throw new ServerException(result);
