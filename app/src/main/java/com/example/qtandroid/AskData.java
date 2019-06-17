@@ -60,6 +60,13 @@ public class AskData extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        ConnectionHandler c;
+        try {
+            c = new ConnectionHandler();
+            c.execute();
+        } catch (Exception e) {
+            finish();
+        }
         button = findViewById(R.id.eseguifc);
         setButton(button, AskData.this);
 

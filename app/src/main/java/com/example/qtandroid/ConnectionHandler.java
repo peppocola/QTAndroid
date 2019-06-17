@@ -1,5 +1,7 @@
 package com.example.qtandroid;
 
+import android.os.AsyncTask;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,28 +10,36 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class ConnectionHandler {
+public class ConnectionHandler extends AsyncTask<String, Void, Void> {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    public ConnectionHandler() throws UnknownHostException {
-        InetAddress add = InetAddress.getByName("127.0.0.1");
-        System.out.println("addr = " + add);
+    @Override
+    protected Void doInBackground(String... strings) {
         try {
-            System.out.println("PRIMA");
-            Socket s = new Socket(add, 8080);
-            System.out.println(s);
-            out = new ObjectOutputStream(s.getOutputStream());
-            in = new ObjectInputStream(s.getInputStream());
+            InetAddress add = InetAddress.getByName("192.168.0.7");
+            System.out.println("addr = " + add);
+            try {
+                System.out.println("PRIMA");
+                Socket s = new Socket(add, 8080);
+                System.out.println("CIAOMAMMA");
+                System.out.println(s);
+                out = new ObjectOutputStream(s.getOutputStream());
+                in = new ObjectInputStream(s.getInputStream());
 
-        } catch (IOException e) {
-            System.out.println("IOEXCEPTION");
-            System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("IOEXCEPTION");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception");
+                System.out.println("messaggio " + e.getMessage());
+            }
+        } catch (UnknownHostException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Exception");
-            System.out.println("messaggio " + e.getMessage());
         }
+        return null;
     }
 
     public String learnFromFile(String tableName, double radius) throws IOException, ClassNotFoundException, ServerException {
