@@ -48,7 +48,7 @@ public class AskData extends AppCompatActivity {
             ID = b.getInt("key");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_cluster);
+        setContentView(R.layout.activity_ask_data);
 
         TextView textView = findViewById(R.id.titolox);
         System.out.println(ID);
@@ -68,8 +68,6 @@ public class AskData extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinner);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,
                 R.layout.color_spinner_layout);
 
@@ -83,11 +81,7 @@ public class AskData extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Specify the layout to use when the list of choices appears
-
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-
-        // Apply the adapter to the spinner
 
         spinner.setAdapter(adapter);
 
