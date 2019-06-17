@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.concurrent.ExecutionException;
+
 public class AskData extends AppCompatActivity {
 
     private int ID;
@@ -68,8 +70,18 @@ public class AskData extends AppCompatActivity {
 
         // Create an ArrayAdapter using the string array and a default spinner layout
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, R.layout.color_spinner_layout);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,
+                R.layout.color_spinner_layout);
+
+        ConnectionHandler c = new ConnectionHandler();
+        try {
+            c.execute(ConnectionHandler.GET_TABLES).get();
+            adapter.addAll(c.getTables());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // Specify the layout to use when the list of choices appears
 
@@ -131,8 +143,8 @@ public class AskData extends AppCompatActivity {
                 try {
                     ConnectionHandler c = new ConnectionHandler();
                     c.execute(ConnectionHandler.LEARN_FILE, "playtennis", "2");
-                    Thread.sleep(300);
-                    System.out.println(c.getResult());
+
+
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();
@@ -143,4 +155,8 @@ public class AskData extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
 }

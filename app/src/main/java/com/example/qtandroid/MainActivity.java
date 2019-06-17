@@ -86,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
                     ConnectionUtils.openConnectionDialog(MainActivity.this, select);
                 } else {
                     Bundle bundle = new Bundle();
-                    if (isNewCluster) {
+                    if (isNewCluster) {                             // caso in cui scelgo di creare un nuovo clustering
                         bundle.putInt("key", AskData.NEW_CLUSTER);
                         AskData.openAskDataWithParams(context, bundle);
-                    } else if (isFileCluster) {
+                    } else if (isFileCluster) {                      // caso in cui voglio caricare da file
                         bundle.putInt("key", AskData.FILE_CLUSTER);
                         AskData.openAskDataWithParams(context, bundle);
                     }

@@ -9,8 +9,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 
-public class ConnectionHandler extends AsyncTask<String, Void, Void> {
+public class ConnectionHandler extends AsyncTask<String, Void, String> {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
@@ -21,11 +22,12 @@ public class ConnectionHandler extends AsyncTask<String, Void, Void> {
     public static final String GET_TABLES = "4";
 
     private String result = "MAMT";
+    private LinkedList<String> tables = new LinkedList<String>();
 
     @Override
-    protected Void doInBackground(String... strings) {
+    protected String doInBackground(String... strings) {
         try {
-            InetAddress add = InetAddress.getByName("192.168.1.8");
+            InetAddress add = InetAddress.getByName("192.168.1.2");
             System.out.println("addr = " + add);
             try {
                 System.out.println("PRIMA");
@@ -49,7 +51,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, Void> {
                         storeClusterInFile();
                         break;
                     case GET_TABLES:
-                        getTableNames();
+                        tables = getTableNames();
                         break;
                     default:
                         System.out.println("MACHECAZZONESO");
@@ -70,21 +72,27 @@ public class ConnectionHandler extends AsyncTask<String, Void, Void> {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        return null;
+        return "done";
     }
 
     public String getResult() {
         return result;
     }
 
+    public LinkedList<String> getTables() {
+        return tables;
+    }
+
     private String learnFromFile(String tableName, double radius) throws IOException, ClassNotFoundException, ServerException {
         out.writeObject(3);
         out.writeObject(tableName);
-
         out.writeObject(radius);
         String result = (String) in.readObject();
-        if (result.equals("OK"))
+        if (result.equals("OK")) {
+            System.out.println("ci siamo");
             return (String) in.readObject();
+        }
+
         else throw new ServerException(result);
     }
 
@@ -116,10 +124,15 @@ public class ConnectionHandler extends AsyncTask<String, Void, Void> {
     }
 
     //not supported
-    private String[] getTableNames() {
-        String[] tables = null;
+    private LinkedList<String> getTableNames() throws IOException, ClassNotFoundException {
+        out.writeObject(4);
+        LinkedList<String> tables = (LinkedList<String>) in.readObject();
         return tables;
     }
 
+    @Override
+    protected void onPostExecute (String a) {
+        System.out.println(result + "tutto apposto");
+    }
 
 }
