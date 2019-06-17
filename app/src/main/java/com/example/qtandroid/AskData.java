@@ -10,21 +10,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FileCluster extends AppCompatActivity {
+public class AskData extends AppCompatActivity {
 
+    private int ID;
     private int position;
     private String radius = "";
     private Button button;
     private Spinner spinner;
     private EditText askRadius;
     private boolean enabled = false;
+    public static final int NEW_CLUSTER = 1;
+    public static final int FILE_CLUSTER = 2;
 
-    public static void openFileCluster(Context context) {
-        ActivityUtils.open(FileCluster.class, context);
+    public static void openAskData(Context context) {
+        ActivityUtils.open(AskData.class, context);
+    }
+
+    public static void openAskDataWithParams(Context context, Bundle bundle) {
+        ActivityUtils.openWithParams(AskData.class, context, bundle);
     }
 
     @Override
@@ -32,15 +40,28 @@ public class FileCluster extends AppCompatActivity {
 
         setTheme(ThemeUtils.defaultTheme());
 
+        Bundle b = getIntent().getExtras();
+        ID = -1;
+        if (b != null)
+            ID = b.getInt("key");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_cluster);
+
+        TextView textView = findViewById(R.id.titolox);
+        System.out.println(ID);
+        if (ID == NEW_CLUSTER) {
+            textView.setText(R.string.newcluster);
+        } else if (ID == FILE_CLUSTER) {
+            textView.setText(R.string.filecluster);
+        } else finish();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         button = findViewById(R.id.eseguifc);
-        setButton(button, FileCluster.this);
+        setButton(button, AskData.this);
 
         spinner = findViewById(R.id.spinner);
 

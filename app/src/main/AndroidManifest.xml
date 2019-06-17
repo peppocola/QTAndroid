@@ -19,10 +19,7 @@
             android:name=".Contacts"
             android:parentActivityName=".MainActivity"></activity>
         <activity
-            android:name=".FileCluster"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".NewCluster"
+            android:name=".AskData"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Details"

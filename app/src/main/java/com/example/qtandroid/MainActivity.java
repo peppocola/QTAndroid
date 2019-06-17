@@ -84,10 +84,15 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog.show();
                 } else if (ConnectionUtils.absentConnection(MainActivity.this)) {
                     ConnectionUtils.openConnectionDialog(MainActivity.this, select);
-                } else if (isNewCluster) {
-                    NewCluster.openNewCluster(context);
-                } else if (isFileCluster) {
-                    FileCluster.openFileCluster(context);
+                } else {
+                    Bundle bundle = new Bundle();
+                    if (isNewCluster) {
+                        bundle.putInt("key", AskData.NEW_CLUSTER);
+                        AskData.openAskDataWithParams(context, bundle);
+                    } else if (isFileCluster) {
+                        bundle.putInt("key", AskData.FILE_CLUSTER);
+                        AskData.openAskDataWithParams(context, bundle);
+                    }
                 }
             }
         });
@@ -142,3 +147,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+
+

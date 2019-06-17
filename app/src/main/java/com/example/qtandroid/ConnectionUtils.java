@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -54,10 +55,13 @@ final class ConnectionUtils {
                         if (ConnectionUtils.absentConnection(context)) {
                             ConnectionUtils.openConnectionDialog(context, select);
                         } else {
+                            Bundle bundle = new Bundle();
                             if (select.getCheckedRadioButtonId() == R.id.newcluster) {
-                                NewCluster.openNewCluster(context);
+                                bundle.putInt("key", AskData.NEW_CLUSTER);
+                                AskData.openAskDataWithParams(context, bundle);
                             } else if (select.getCheckedRadioButtonId() == R.id.filecluster) {
-                                FileCluster.openFileCluster(context);
+                                bundle.putInt("key", AskData.FILE_CLUSTER);
+                                AskData.openAskDataWithParams(context, bundle);
                             } else dialogInterface.cancel();
                         }
 

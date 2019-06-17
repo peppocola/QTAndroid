@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Contacts extends AppCompatActivity {
 
     public static void openContacts(Context context) {
-        ActivityUtils.open(FileCluster.class, context);
+        ActivityUtils.open(AskData.class, context);
     }
 
     @Override

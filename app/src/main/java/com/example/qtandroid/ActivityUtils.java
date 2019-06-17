@@ -2,6 +2,7 @@ package com.example.qtandroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 public final class ActivityUtils {
 
@@ -13,8 +14,9 @@ public final class ActivityUtils {
         context.startActivity(i);
     }
 
-    public static void openWithParams(Class<?> activity, Context context) {
+    public static void openWithParams(Class<?> activity, Context context, Bundle params) {
         Intent i = new Intent(context, activity);
+        i.putExtras(params);
         context.startActivity(i);
     }
 
