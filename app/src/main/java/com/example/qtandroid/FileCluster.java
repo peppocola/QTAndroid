@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class FileCluster extends AppCompatActivity {
 
     private int position;
-    private String radius;
+    private String radius = "";
     private Button button;
     private Spinner spinner;
     private EditText askRadius;
@@ -61,11 +61,7 @@ public class FileCluster extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 position = pos;
-                if (position != 0 && !radius.isEmpty()) {
-                    enabled = true;
-                } else {
-                    enabled = false;
-                }
+                enabled = position != 0 && radius.isEmpty();
             }
 
             @Override
@@ -82,12 +78,8 @@ public class FileCluster extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //radius assignment missing
-                if (position != 0 && !radius.isEmpty()) {
-                    enabled = true;
-                } else {
-                    enabled = false;
-                }
+                radius = askRadius.getText().toString();
+                enabled = position != 0 && !radius.isEmpty();
             }
 
             @Override
