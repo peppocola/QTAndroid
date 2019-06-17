@@ -60,15 +60,9 @@ public class AskData extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        ConnectionHandler c;
-        try {
-            c = new ConnectionHandler();
-            c.execute();
-        } catch (Exception e) {
-            finish();
-        }
+
         button = findViewById(R.id.eseguifc);
-        setButton(button, AskData.this);
+        setButton2(button, AskData.this);
 
         spinner = findViewById(R.id.spinner);
 
@@ -129,5 +123,24 @@ public class AskData extends AppCompatActivity {
         });
     }
 
+    protected void setButton2(Button button, final Context context) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    ConnectionHandler c = new ConnectionHandler();
+                    c.execute(ConnectionHandler.LEARN_FILE, "playtennis", "2");
+                    Thread.sleep(300);
+                    System.out.println(c.getResult());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+    }
 
 }
