@@ -39,7 +39,6 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String id = "";
         try {
             InetAddress add = InetAddress.getByName("paologas91.ddns.net");
             //System.out.println("addr = " + add);
