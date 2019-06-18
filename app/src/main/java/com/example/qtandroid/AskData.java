@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,17 +18,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
 public class AskData extends AppCompatActivity {
 
     private int ID;
-    private int position;
     private String radius = "";
     private Button button;
     private Spinner spinner;
     private EditText askRadius;
     private boolean enabled = false;
+
+    public static final String DEFAULT_SPINNER = "--------";
     public static final int NEW_CLUSTER = 1;
     public static final int FILE_CLUSTER = 2;
 
@@ -79,7 +82,7 @@ public class AskData extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 radius = askRadius.getText().toString();
-                enabled = position != 0 && !radius.isEmpty();
+                enabled = !(spinner.getSelectedItem().toString().equals(DEFAULT_SPINNER)) && !radius.isEmpty();
             }
 
             @Override
@@ -96,7 +99,9 @@ public class AskData extends AppCompatActivity {
             System.out.println("executing");
             if (c.execute(ConnectionHandler.GET_TABLES).get().equals(ConnectionHandler.DONE)) {
                 System.out.println("executed");
-                adapter.addAll(c.getTables());
+                LinkedList<String> tables = c.getTables();
+                tables.add(0, DEFAULT_SPINNER);
+                adapter.addAll(tables);
             } else {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder
@@ -125,8 +130,7 @@ public class AskData extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                position = pos;
-                enabled = position != 0 && radius.isEmpty();
+                enabled = !(spinner.getSelectedItem().toString().equals(DEFAULT_SPINNER)) && !radius.isEmpty();
             }
 
             @Override
@@ -145,7 +149,12 @@ public class AskData extends AppCompatActivity {
 
                     try {
                         ConnectionHandler c = new ConnectionHandler(context);
-                        c.execute(ConnectionHandler.LEARN_FILE, "playtennis", "2");
+                        switch (ID) {
+                            case NEW_CLUSTER:
+                                c.execute(ConnectionHandler.LEARN_DB, spinner.getSelectedItem().toString(), radius);
+                            case FILE_CLUSTER:
+                                c.execute(ConnectionHandler.LEARN_FILE, spinner.getSelectedItem().toString(), radius);
+                        }
 
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -158,6 +167,12 @@ public class AskData extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        ProgressBar progressBar = findViewById(R.id.progress_circular);
+        progressBar.setVisibility(View.INVISIBLE);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onPostResume() {

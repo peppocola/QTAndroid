@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -49,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
         buttonDetails = findViewById(R.id.details);
         setDetailsButton(buttonDetails, MainActivity.this);
 
+        ProgressBar progressBar = findViewById(R.id.progress_circular);
+        progressBar.setVisibility(View.INVISIBLE);
         select = findViewById(R.id.select);
         buttonCluster = findViewById(R.id.esegui);
-        setClusterButton(buttonCluster, MainActivity.this);
+        setClusterButton(buttonCluster, progressBar, MainActivity.this);
 
     }
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void setClusterButton(Button button, final Context context) {
+    protected void setClusterButton(Button button, final ProgressBar progressBar, final Context context) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,9 +95,11 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     if (isNewCluster) {                             // caso in cui scelgo di creare un nuovo clustering
                         bundle.putInt("key", AskData.NEW_CLUSTER);
+                        progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskDataWithParams(context, bundle);
                     } else if (isFileCluster) {                      // caso in cui voglio caricare da file
                         bundle.putInt("key", AskData.FILE_CLUSTER);
+                        progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskDataWithParams(context, bundle);
                     }
                 }

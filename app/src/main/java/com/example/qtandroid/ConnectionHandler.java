@@ -40,11 +40,11 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         try {
-            InetAddress add = InetAddress.getByName("192.168.0.7");
+            InetAddress add = InetAddress.getByName("paologas91.ddns.net");
             //System.out.println("addr = " + add);
             try {
                 Socket s = new Socket();
-                s.connect(new InetSocketAddress(add, 8080), 2000);
+                s.connect(new InetSocketAddress(add, 8080), 5000);
                 //System.out.println("socket = " + s);
                 out = new ObjectOutputStream(s.getOutputStream());
                 in = new ObjectInputStream(s.getInputStream());
@@ -54,7 +54,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
                         storeTableFromDb(strings[1]);
                         break;
                     case LEARN_DB:
-                        result = learningFromDbTable(Double.parseDouble(strings[1]));
+                        result = learningFromDbTable(strings[1], Double.parseDouble(strings[2]));
                         break;
                     case SAVE_FILE:
                         storeClusterInFile();
@@ -128,16 +128,19 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
             throw new ServerException(result);
     }
 
-    private String learningFromDbTable(Double radius) throws ServerException, IOException, ClassNotFoundException {
+    private String learningFromDbTable(String tableName, Double radius) throws ServerException, IOException, ClassNotFoundException {
+
+        storeTableFromDb(tableName);
         out.writeObject(1);
 
         out.writeObject(radius);
-        String result = (String) in.readObject();
+        result = (String) in.readObject();
         if (result.equals("OK")) {
             result = "Number of Clusters:" + in.readObject() + "\n";
             result += (String) in.readObject();
             return result;
         } else throw new ServerException(result);
+
     }
 
     private void storeClusterInFile() throws ServerException, IOException, ClassNotFoundException {

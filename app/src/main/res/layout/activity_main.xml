@@ -51,37 +51,37 @@
         android:textStyle="bold" />
 
     <TextView
-        android:layout_marginTop="20dp"
         android:id="@+id/instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/instructions"
         android:textColor="?attr/textcolor"
         android:textSize="15sp"
         android:textStyle="normal" />
 
     <RadioGroup
-        android:layout_marginTop="10dp"
         android:id="@+id/select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/newcluster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="checkRadio"
             android:text="@string/newcluster"
-            android:textColor="?attr/textcolor"
-            android:onClick="checkRadio" />
+            android:textColor="?attr/textcolor" />
 
         <RadioButton
             android:id="@+id/filecluster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="checkRadio"
             android:text="@string/filecluster"
-            android:textColor="?attr/textcolor"
-            android:onClick="checkRadio"/>
+            android:textColor="?attr/textcolor" />
     </RadioGroup>
 
     <Button
@@ -94,16 +94,24 @@
         android:textColor="#fff"
         android:text="@string/esegui"/>
 
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_marginTop="10dp"
+        android:layout_width="26dp"
+        android:layout_height="28dp"
+        android:indeterminate="true"
+        android:indeterminateTint="?attr/buttoncolor"
+        android:layout_gravity="end" />
+
     <Switch
-        android:layout_marginTop="20dp"
         android:id="@+id/DarkSwitch"
         android:layout_width="130dp"
         android:layout_height="63dp"
         android:layout_gravity="end"
+        android:layout_marginTop="10dp"
         android:text="@string/day_night"
         android:textColor="?attr/textcolor"
-        android:textSize="18sp"
-        />
-
+        android:textSize="18sp" />
 
 </LinearLayout>
+
