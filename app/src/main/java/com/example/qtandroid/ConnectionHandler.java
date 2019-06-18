@@ -160,8 +160,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override //probabilmente non serve
     protected void onPostExecute (String a) {
         progress.dismiss();
-
-        if (!a.contains(GET_TABLES)) {
+        if (!a.contains(GET_TABLES) && !a.equals(ERROR)) {
             MainActivity.openMainActivity(context); //create new activity
         }
 
