@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup select;
     private RadioButton selected;
 
+    public static void openMainActivity(Context context) {
+        ActivityUtils.open(MainActivity.class, context);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

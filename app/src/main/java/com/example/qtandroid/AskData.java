@@ -1,6 +1,7 @@
 package com.example.qtandroid;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.ExecutionException;
@@ -64,17 +66,52 @@ public class AskData extends AppCompatActivity {
 
 
         button = findViewById(R.id.eseguifc);
-        setButton2(button, AskData.this);
+        setButton(button, AskData.this);
 
         spinner = findViewById(R.id.spinner);
+        askRadius = findViewById(R.id.insRadius);
+
+        askRadius.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                radius = askRadius.getText().toString();
+                enabled = position != 0 && !radius.isEmpty();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,
                 R.layout.color_spinner_layout);
 
-        ConnectionHandler c = new ConnectionHandler();
+        ConnectionUtils.checkConnection(this);
+        ConnectionHandler c = new ConnectionHandler(this);
         try {
-            c.execute(ConnectionHandler.GET_TABLES).get();
-            adapter.addAll(c.getTables());
+            System.out.println("executing");
+            if (c.execute(ConnectionHandler.GET_TABLES).get().equals(ConnectionHandler.DONE)) {
+                System.out.println("executed");
+                adapter.addAll(c.getTables());
+            } else {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
+                        .setTitle(R.string.ServerUnreachableTitle)
+                        .setMessage(R.string.ServerUnreachableMessage)
+                        .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                MainActivity.openMainActivity(AskData.this);
+                                (AskData.this).finish();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -97,24 +134,6 @@ public class AskData extends AppCompatActivity {
             }
         });
 
-        askRadius = findViewById(R.id.insRadius);
-
-        askRadius.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                radius = askRadius.getText().toString();
-                enabled = position != 0 && !radius.isEmpty();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
     }
 
     protected void setButton(Button button, final Context context) {
@@ -122,32 +141,23 @@ public class AskData extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (enabled) {
-                    Toast.makeText(getApplicationContext(), "bene", Toast.LENGTH_SHORT).show();
+                    ConnectionUtils.checkConnection(context);
+
+                    try {
+                        ConnectionHandler c = new ConnectionHandler(context);
+                        c.execute(ConnectionHandler.LEARN_FILE, "playtennis", "2");
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        e.printStackTrace();
+                    }
+
                 } else
                     Toast.makeText(getApplicationContext(), R.string.fill, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    protected void setButton2(Button button, final Context context) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try {
-                    ConnectionHandler c = new ConnectionHandler();
-                    c.execute(ConnectionHandler.LEARN_FILE, "playtennis", "2");
-
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-    }
 
     @Override
     protected void onPostResume() {
