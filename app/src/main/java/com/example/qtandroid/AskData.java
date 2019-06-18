@@ -97,7 +97,7 @@ public class AskData extends AppCompatActivity {
         ConnectionHandler c = new ConnectionHandler(this);
         try {
             System.out.println("executing");
-            if (c.execute(ConnectionHandler.GET_TABLES).get().equals(ConnectionHandler.DONE)) {
+            if (c.execute(ConnectionHandler.GET_TABLES).get().contains(ConnectionHandler.DONE)) {
                 System.out.println("executed");
                 LinkedList<String> tables = c.getTables();
                 tables.add(0, DEFAULT_SPINNER);
@@ -154,7 +154,11 @@ public class AskData extends AppCompatActivity {
                                 c.execute(ConnectionHandler.LEARN_DB, spinner.getSelectedItem().toString(), radius);
                             case FILE_CLUSTER:
                                 c.execute(ConnectionHandler.LEARN_FILE, spinner.getSelectedItem().toString(), radius);
+                            default:
                         }
+
+                        c.getResult();
+
 
                     } catch (Exception e) {
                         System.out.println(e.getMessage());

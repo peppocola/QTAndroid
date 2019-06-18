@@ -39,6 +39,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        String id = "";
         try {
             InetAddress add = InetAddress.getByName("paologas91.ddns.net");
             //System.out.println("addr = " + add);
@@ -81,7 +82,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        return DONE;
+        return DONE + strings[0];
     }
 
     @Override
@@ -160,7 +161,11 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override //probabilmente non serve
     protected void onPostExecute (String a) {
         progress.dismiss();
-        System.out.println(result);
+
+        if (!a.contains(GET_TABLES)) {
+            MainActivity.openMainActivity(context); //create new activity
+        }
+
     }
 
 }
