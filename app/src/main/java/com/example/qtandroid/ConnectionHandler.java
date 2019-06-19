@@ -67,6 +67,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
                         break;
                     default:
                 }
+
                 s.close();
 
             } catch (SocketTimeoutException e) {
@@ -153,8 +154,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     //not supported
     private LinkedList<String> getTableNames() throws IOException, ClassNotFoundException {
         out.writeObject(4);
-        LinkedList<String> tables = (LinkedList<String>) in.readObject();
-        return tables;
+        return (LinkedList<String>) in.readObject();
     }
 
     @Override //probabilmente non serve

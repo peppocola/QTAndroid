@@ -58,10 +58,10 @@ final class ConnectionUtils {
                             Bundle bundle = new Bundle();
                             if (select.getCheckedRadioButtonId() == R.id.newcluster) {
                                 bundle.putInt("key", AskData.NEW_CLUSTER);
-                                AskData.openAskDataWithParams(context, bundle);
+                                AskData.openAskData(context, bundle);
                             } else if (select.getCheckedRadioButtonId() == R.id.filecluster) {
                                 bundle.putInt("key", AskData.FILE_CLUSTER);
-                                AskData.openAskDataWithParams(context, bundle);
+                                AskData.openAskData(context, bundle);
                             } else dialogInterface.cancel();
                         }
 

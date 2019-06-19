@@ -35,5 +35,9 @@
     <string name="ServerUnreachableTitle">"Server irraggiungibile"</string>
     <string name="ServerUnreachableMessage">"Non riesco a contattare il server..."</string>
 
+    <string name="DisplayResultsTitle">"Ecco i tuoi risultati!"</string>
+    <string name="Home">"Torna alla Home"</string>
+    <string name="Cluster">"Torna indietro"</string>
+
 
 </resources>

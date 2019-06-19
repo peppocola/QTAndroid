@@ -34,11 +34,7 @@ public class AskData extends AppCompatActivity {
     public static final int NEW_CLUSTER = 1;
     public static final int FILE_CLUSTER = 2;
 
-    public static void openAskData(Context context) {
-        ActivityUtils.open(AskData.class, context);
-    }
-
-    public static void openAskDataWithParams(Context context, Bundle bundle) {
+    public static void openAskData(Context context, Bundle bundle) {
         ActivityUtils.openWithParams(AskData.class, context, bundle);
     }
 
@@ -50,7 +46,7 @@ public class AskData extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ID = -1;
         if (b != null)
-            ID = b.getInt("key");
+            ID = b.getInt("type");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_data);
@@ -159,8 +155,11 @@ public class AskData extends AppCompatActivity {
                             default:
                         }
 
-                        System.out.println(c.getResult());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("result", c.getResult());
+                        bundle.putInt("type", ID);
 
+                        DisplayResults.openDisplayResults(AskData.this, bundle);
 
                     } catch (Exception e) {
                         System.out.println("Bottone: " + e.getMessage());

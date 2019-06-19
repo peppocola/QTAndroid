@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Bundle bundle = new Bundle();
                     if (isNewCluster) {                             // caso in cui scelgo di creare un nuovo clustering
-                        bundle.putInt("key", AskData.NEW_CLUSTER);
+                        bundle.putInt("type", AskData.NEW_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
-                        AskData.openAskDataWithParams(context, bundle);
+                        AskData.openAskData(context, bundle);
                     } else if (isFileCluster) {                      // caso in cui voglio caricare da file
-                        bundle.putInt("key", AskData.FILE_CLUSTER);
+                        bundle.putInt("type", AskData.FILE_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
-                        AskData.openAskDataWithParams(context, bundle);
+                        AskData.openAskData(context, bundle);
                     }
                 }
             }
