@@ -151,17 +151,19 @@ public class AskData extends AppCompatActivity {
                         ConnectionHandler c = new ConnectionHandler(context);
                         switch (ID) {
                             case NEW_CLUSTER:
-                                c.execute(ConnectionHandler.LEARN_DB, spinner.getSelectedItem().toString(), radius);
+                                c.execute(ConnectionHandler.LEARN_DB, spinner.getSelectedItem().toString(), radius).get();
+                                break;
                             case FILE_CLUSTER:
-                                c.execute(ConnectionHandler.LEARN_FILE, spinner.getSelectedItem().toString(), radius);
+                                c.execute(ConnectionHandler.LEARN_FILE, spinner.getSelectedItem().toString(), radius).get();
+                                break;
                             default:
                         }
 
-                        c.getResult();
+                        System.out.println(c.getResult());
 
 
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("Bottone: " + e.getMessage());
                         e.printStackTrace();
                     }
 
