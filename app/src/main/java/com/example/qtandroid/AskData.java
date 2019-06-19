@@ -35,7 +35,9 @@ public class AskData extends AppCompatActivity {
     public static final int FILE_CLUSTER = 2;
 
     public static void openAskData(Context context, Bundle bundle) {
+        System.out.println("NOn lo so" + context);
         ActivityUtils.openWithParams(AskData.class, context, bundle);
+
     }
 
     @Override
@@ -155,11 +157,6 @@ public class AskData extends AppCompatActivity {
                             default:
                         }
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("result", c.getResult());
-                        bundle.putInt("type", ID);
-
-                        DisplayResults.openDisplayResults(AskData.this, bundle);
 
                     } catch (Exception e) {
                         System.out.println("Bottone: " + e.getMessage());

@@ -1,6 +1,7 @@
 package com.example.qtandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class DisplayResults extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        setTheme(ThemeUtils.defaultTheme());
         Bundle bundle = getIntent().getExtras();
         result = bundle.getString("result");
         type = bundle.getInt("type");
@@ -33,7 +34,6 @@ public class DisplayResults extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.textView);
         textView.setText(result);
-
         Button home = findViewById(R.id.home);
         Button back = findViewById(R.id.back);
 
@@ -51,12 +51,10 @@ public class DisplayResults extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
     }
 
     @Override
     public void onBackPressed() {
-
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
         AskData.openAskData(DisplayResults.this, bundle);

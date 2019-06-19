@@ -3,6 +3,7 @@ package com.example.qtandroid;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,7 +41,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         try {
-            InetAddress add = InetAddress.getByName("paologas91.ddns.net");
+            InetAddress add = InetAddress.getByName("192.168.1.8");//paologas91.ddns.net
             //System.out.println("addr = " + add);
             try {
                 Socket s = new Socket();
@@ -161,8 +162,17 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     protected void onPostExecute (String a) {
         progress.dismiss();
         if (!a.contains(GET_TABLES) && !a.equals(ERROR)) {
-            MainActivity.openMainActivity(context); //create new activity
+            Bundle bundle = new Bundle();
+            bundle.putString("result", getResult());
+            if (a.contains(LEARN_DB)) {
+                bundle.putInt("type", AskData.NEW_CLUSTER);
+            } else {
+                bundle.putInt("type", AskData.FILE_CLUSTER);
+            }
+
+            DisplayResults.openDisplayResults(context, bundle);
         }
+
 
     }
 
