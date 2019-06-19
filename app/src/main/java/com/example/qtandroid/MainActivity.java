@@ -148,9 +148,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.contacts:
                 Contacts.openContacts(MainActivity.this);
                 return true;
-            case R.id.verdino:
-                Contacts.openContacts(MainActivity.this);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

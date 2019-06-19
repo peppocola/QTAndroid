@@ -41,12 +41,10 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         try {
-            InetAddress add = InetAddress.getByName("192.168.1.8");//paologas91.ddns.net
-            //System.out.println("addr = " + add);
+            InetAddress add = InetAddress.getByName("paologas91.ddns.net");
             try {
                 Socket s = new Socket();
                 s.connect(new InetSocketAddress(add, 8080), 5000);
-                //System.out.println("socket = " + s);
                 out = new ObjectOutputStream(s.getOutputStream());
                 in = new ObjectInputStream(s.getInputStream());
 
@@ -68,7 +66,7 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
                         break;
                     default:
                 }
-
+                out.writeObject("close");
                 s.close();
 
             } catch (SocketTimeoutException e) {
@@ -152,13 +150,12 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
             throw new ServerException(result);
     }
 
-    //not supported
     private LinkedList<String> getTableNames() throws IOException, ClassNotFoundException {
         out.writeObject(4);
         return (LinkedList<String>) in.readObject();
     }
 
-    @Override //probabilmente non serve
+    @Override
     protected void onPostExecute (String a) {
         progress.dismiss();
         System.out.println(a);

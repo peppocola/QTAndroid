@@ -39,5 +39,10 @@
     <string name="Home">"Torna alla Home"</string>
     <string name="Cluster">"Torna indietro"</string>
 
+    <string name="ContactsText">"Il progetto è stato realizzato da:"</string>
+    <string name="Contributor1">"&#8226; <a href="http://github.com/peppocola">Giuseppe Colavito"</a></string>
+    <string name="Contributor2">"&#8226; <a href="http://github.com/paologas91">Paolo Gasparro"</a></string>
+    <string name="Contributor3">"&#8226; <a href="http://github.com/GreenSully">Antonio Grisulli"</a></string>
+
 
 </resources>
