@@ -157,7 +157,6 @@ public class AskData extends AppCompatActivity {
                             default:
                         }
 
-
                     } catch (Exception e) {
                         System.out.println("Bottone: " + e.getMessage());
                         e.printStackTrace();

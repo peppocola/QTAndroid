@@ -161,7 +161,9 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
     @Override //probabilmente non serve
     protected void onPostExecute (String a) {
         progress.dismiss();
+        System.out.println(a);
         if (!a.contains(GET_TABLES) && !a.equals(ERROR)) {
+
             Bundle bundle = new Bundle();
             bundle.putString("result", getResult());
             if (a.contains(LEARN_DB)) {

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(ThemeUtils.defaultTheme());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main3);
 
         DarkSwitch = findViewById(R.id.DarkSwitch);
         DarkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode()==MODE_NIGHT_YES);
