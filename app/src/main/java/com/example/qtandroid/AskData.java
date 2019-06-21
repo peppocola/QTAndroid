@@ -95,7 +95,7 @@ public class AskData extends AppCompatActivity {
         try {
             System.out.println("executing");
             if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("192.168.1.8");
+                ConnectionHandler2.getInstance().setAddres("192.168.1.2");
                 ConnectionHandler2.getInstance().setPort(8080);
                 ConnectionHandler2.getInstance().connect();
             }

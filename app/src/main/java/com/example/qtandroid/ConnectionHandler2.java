@@ -155,6 +155,7 @@ public class ConnectionHandler2 {
         protected Void doInBackground(Void... voids) {
             synchronized (lock) {
                 try {
+                    socketContainer.getOut().writeObject(5);
                     socketContainer.getSocket().close();
                 } catch (IOException e) {
                     e.printStackTrace();
