@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
-public class AskData extends AppCompatActivity {
+public class AskData2 extends AppCompatActivity {
 
     private int ID;
     private String radius = "";
@@ -36,7 +36,7 @@ public class AskData extends AppCompatActivity {
 
     public static void openAskData(Context context, Bundle bundle) {
         System.out.println("NOn lo so" + context);
-        ActivityUtils.openWithParams(AskData.class, context, bundle);
+        ActivityUtils.openWithParams(AskData2.class, context, bundle);
 
     }
 
@@ -67,7 +67,7 @@ public class AskData extends AppCompatActivity {
 
 
         button = findViewById(R.id.eseguifc);
-        setButton(button, AskData.this);
+        setButton(button, AskData2.this);
 
         spinner = findViewById(R.id.spinner);
         askRadius = findViewById(R.id.insRadius);
@@ -92,16 +92,12 @@ public class AskData extends AppCompatActivity {
                 R.layout.color_spinner_layout);
 
         ConnectionUtils.checkConnection(this);
+        ConnectionHandler c = new ConnectionHandler(this);
         try {
             System.out.println("executing");
-            if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("192.168.1.8");
-                ConnectionHandler2.getInstance().setPort(8080);
-                ConnectionHandler2.getInstance().connect();
-            }
-            if (ConnectionHandler2.getInstance().isConnected()) {
+            if (c.execute(ConnectionHandler.GET_TABLES).get().contains(ConnectionHandler.DONE)) {
                 System.out.println("executed");
-                LinkedList<String> tables = ConnectionHandler2.getInstance().getTables();
+                LinkedList<String> tables = c.getTables();
                 tables.add(0, DEFAULT_SPINNER);
                 adapter.addAll(tables);
             } else {
@@ -112,8 +108,8 @@ public class AskData extends AppCompatActivity {
                         .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.openMainActivity(AskData.this);
-                                (AskData.this).finish();
+                                MainActivity.openMainActivity(AskData2.this);
+                                (AskData2.this).finish();
                             }
                         });
                 AlertDialog alertDialog = builder.create();
@@ -148,24 +144,18 @@ public class AskData extends AppCompatActivity {
             public void onClick(View view) {
                 if (enabled) {
                     ConnectionUtils.checkConnection(context);
-                    String result = "";
-                    Bundle bundle = new Bundle();
 
                     try {
-
+                        ConnectionHandler c = new ConnectionHandler(context);
                         switch (ID) {
                             case NEW_CLUSTER:
-                                result = ConnectionHandler2.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                bundle.putInt("type", AskData.NEW_CLUSTER);
+                                c.execute(ConnectionHandler.LEARN_DB, spinner.getSelectedItem().toString(), radius).get();
                                 break;
                             case FILE_CLUSTER:
-                                result = ConnectionHandler2.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                bundle.putInt("type", AskData.FILE_CLUSTER);
+                                c.execute(ConnectionHandler.LEARN_FILE, spinner.getSelectedItem().toString(), radius).get();
                                 break;
                             default:
                         }
-                        bundle.putString("result", result);
-                        DisplayResults.openDisplayResults(context, bundle);
 
                     } catch (Exception e) {
                         System.out.println("Bottone: " + e.getMessage());
@@ -182,7 +172,6 @@ public class AskData extends AppCompatActivity {
     public void onBackPressed() {
         ProgressBar progressBar = findViewById(R.id.progress_circular);
         progressBar.setVisibility(View.INVISIBLE);
-        ConnectionHandler2.getInstance().diconnect();
         super.onBackPressed();
     }
 
@@ -190,6 +179,4 @@ public class AskData extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
     }
-
-
 }
