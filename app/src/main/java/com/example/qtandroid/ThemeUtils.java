@@ -15,9 +15,12 @@ public final class ThemeUtils {
 
     public static int defaultTheme() {
         if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
+            System.out.println("dark");
             return(R.style.DarkMode);
+        } else {
+            System.out.println("light");
+            return (R.style.AppTheme);
         }
-        else return(R.style.AppTheme);
     }
 
     public static void listen(final Context context, Switch DarkSwitch) {

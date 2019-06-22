@@ -51,7 +51,7 @@ public class ConnectionHandler2 {
 
     }
 
-    public void diconnect() {
+    public void disconnect() {
         new Disconnect().execute();
     }
 
@@ -158,6 +158,7 @@ public class ConnectionHandler2 {
                     if (connected) {
                         socketContainer.getOut().writeObject(5);
                         socketContainer.getSocket().close();
+                        connected = false;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

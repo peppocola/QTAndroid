@@ -97,7 +97,7 @@ public class AskData extends AppCompatActivity {
         try {
             System.out.println("executing");
             if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("paologas91.ddns.net");
+                ConnectionHandler2.getInstance().setAddres("192.168.0.7");
                 ConnectionHandler2.getInstance().setPort(8080);
                 ConnectionHandler2.getInstance().connect();
             }
@@ -185,8 +185,7 @@ public class AskData extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        ConnectionHandler2.getInstance().diconnect();
+        ConnectionHandler2.getInstance().disconnect();
         super.onBackPressed();
     }
 

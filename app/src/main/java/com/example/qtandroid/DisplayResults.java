@@ -36,7 +36,7 @@ public class DisplayResults extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         textView.setText(result);
 
-        boolean isEmpty = result.equals("empty");
+        boolean isEmpty = result.equals("empty");  //nullpointer
         boolean isFull = !isEmpty && result.equals("full");
 
         String title = "";
@@ -83,7 +83,7 @@ public class DisplayResults extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConnectionHandler2.getInstance().diconnect();
+                ConnectionHandler2.getInstance().disconnect();
                 MainActivity.openMainActivity(DisplayResults.this);
                 finish();
             }
@@ -101,6 +101,7 @@ public class DisplayResults extends AppCompatActivity {
     public void onBackPressed() {
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
+        finish();
         AskData.openAskData(DisplayResults.this, bundle);
 
         super.onBackPressed();
