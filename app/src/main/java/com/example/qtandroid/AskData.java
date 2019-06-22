@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +29,8 @@ public class AskData extends AppCompatActivity {
     private EditText askRadius;
     private boolean enabled = false;
 
+    private AlertDialog alertDialog;
+
     public static final String DEFAULT_SPINNER = "--------";
     public static final int NEW_CLUSTER = 1;
     public static final int FILE_CLUSTER = 2;
@@ -44,14 +45,15 @@ public class AskData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         setTheme(ThemeUtils.defaultTheme());
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ask_data);
 
         Bundle b = getIntent().getExtras();
         ID = -1;
         if (b != null)
             ID = b.getInt("type");
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ask_data);
+
 
         TextView textView = findViewById(R.id.titolox);
         System.out.println(ID);
@@ -95,7 +97,7 @@ public class AskData extends AppCompatActivity {
         try {
             System.out.println("executing");
             if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("192.168.1.2");
+                ConnectionHandler2.getInstance().setAddres("paologas91.ddns.net");
                 ConnectionHandler2.getInstance().setPort(8080);
                 ConnectionHandler2.getInstance().connect();
             }
@@ -115,8 +117,11 @@ public class AskData extends AppCompatActivity {
                                 MainActivity.openMainActivity(AskData.this);
                                 (AskData.this).finish();
                             }
-                        });
-                AlertDialog alertDialog = builder.create();
+                        })
+                        .setCancelable(false);
+
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.show();
             }
         } catch (ExecutionException e) {
@@ -180,8 +185,7 @@ public class AskData extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ProgressBar progressBar = findViewById(R.id.progress_circular);
-        progressBar.setVisibility(View.INVISIBLE);
+
         ConnectionHandler2.getInstance().diconnect();
         super.onBackPressed();
     }
@@ -191,5 +195,22 @@ public class AskData extends AppCompatActivity {
         super.onPostResume();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+    }
 
 }

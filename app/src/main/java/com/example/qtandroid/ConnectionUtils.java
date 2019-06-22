@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +31,10 @@ final class ConnectionUtils {
                 .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        checkConnection(context);
+                        if (absentConnection(context)) {
+                            openConnectionDialog(context);
+                        } else
+                            Toast.makeText(context, "Connessione stabilita! Premi VAI!", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -53,6 +57,7 @@ final class ConnectionUtils {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (ConnectionUtils.absentConnection(context)) {
+                            dialogInterface.dismiss();
                             ConnectionUtils.openConnectionDialog(context, select);
                         } else {
                             Bundle bundle = new Bundle();

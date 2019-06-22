@@ -23,6 +23,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 public class MainActivity extends AppCompatActivity {
 
     private Switch DarkSwitch;
+    private ProgressBar progressBar;
 
     private RadioGroup select;
     private RadioButton selected;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDetails = findViewById(R.id.details);
         setDetailsButton(buttonDetails, MainActivity.this);
 
-        ProgressBar progressBar = findViewById(R.id.progress_circular);
+        progressBar = findViewById(R.id.progress_circular);
         progressBar.setVisibility(View.INVISIBLE);
         select = findViewById(R.id.select);
         buttonCluster = findViewById(R.id.esegui);
@@ -90,14 +91,14 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 } else if (ConnectionUtils.absentConnection(MainActivity.this)) {
-                    ConnectionUtils.openConnectionDialog(MainActivity.this, select);
+                    ConnectionUtils.openConnectionDialog(MainActivity.this);
                 } else {
                     Bundle bundle = new Bundle();
-                    if (isNewCluster) {                             // caso in cui scelgo di creare un nuovo clustering
+                    if (isNewCluster) {
                         bundle.putInt("type", AskData.NEW_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskData(context, bundle);
-                    } else if (isFileCluster) {                      // caso in cui voglio caricare da file
+                    } else if (isFileCluster) {
                         bundle.putInt("type", AskData.FILE_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskData(context, bundle);
@@ -144,14 +145,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.contacts:
+        if (item.getItemId() == R.id.contacts) {
                 Contacts.openContacts(MainActivity.this);
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onPostResume() {
+        progressBar.setVisibility(View.INVISIBLE);
+        super.onPostResume();
+
+    }
+
 }
 
 

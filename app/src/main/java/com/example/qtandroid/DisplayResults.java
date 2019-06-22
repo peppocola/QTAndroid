@@ -1,11 +1,13 @@
 package com.example.qtandroid;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DisplayResults extends AppCompatActivity {
@@ -33,6 +35,48 @@ public class DisplayResults extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.textView);
         textView.setText(result);
+
+        boolean isEmpty = result.equals("empty");
+        boolean isFull = !isEmpty && result.equals("full");
+
+        String title = "";
+        String message = "";
+
+        if (isFull) {
+            title = "Insieme vuoto!";
+            message = "Nessun dato da clusterizzare...\nProva a selezionare un'altra tabella";
+
+        } else if (isEmpty) {
+            title = "Singolo cluster";
+            message = "Tutti i dati sono finiti nello stesso cluster\nProva a selezionare un raggio più piccolo";
+        }
+
+        if (isEmpty || isFull) { //da testare
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(DisplayResults.this);
+            builder
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            dialogInterface.cancel();
+                        }
+                    })
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            dialogInterface.cancel();
+                            onBackPressed(); //molti dubbi
+                        }
+                    });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
         Button home = findViewById(R.id.home);
         Button back = findViewById(R.id.back);
 

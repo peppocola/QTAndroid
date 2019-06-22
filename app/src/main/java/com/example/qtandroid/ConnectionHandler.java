@@ -66,7 +66,6 @@ public class ConnectionHandler extends AsyncTask<String, Void, String> {
                         break;
                     default:
                 }
-                out.writeObject("close");
                 s.close();
 
             } catch (SocketTimeoutException e) {

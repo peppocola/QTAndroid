@@ -155,8 +155,10 @@ public class ConnectionHandler2 {
         protected Void doInBackground(Void... voids) {
             synchronized (lock) {
                 try {
-                    socketContainer.getOut().writeObject(5);
-                    socketContainer.getSocket().close();
+                    if (connected) {
+                        socketContainer.getOut().writeObject(5);
+                        socketContainer.getSocket().close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -212,7 +214,7 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                e.printStackTrace();
+                return "SERVER EXCEPTION";
             }
             return null;
         }
@@ -229,14 +231,14 @@ public class ConnectionHandler2 {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String result;
+            String result = "";
             try {
                 synchronized (lock) {
                     if (!currentTable.equals(tableName)) {
                         storeTableFromDb(tableName);
                         currentTable = tableName;
                     }
-                    result = learningFromDbTable(tableName, radius);
+                    result = learningFromDbTable(radius);
                     storeClusterInFile();
                     return result;
                 }
@@ -245,7 +247,8 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                e.printStackTrace();
+                if (result.equals("")) return "empty";  //check this
+                return "full";
             }
             return null;
         }
@@ -258,7 +261,7 @@ public class ConnectionHandler2 {
                 throw new ServerException(result);
         }
 
-        private String learningFromDbTable(String tableName, Double radius) throws ServerException, IOException, ClassNotFoundException {
+        private String learningFromDbTable(Double radius) throws ServerException, IOException, ClassNotFoundException {
             socketContainer.getOut().writeObject(1);
 
             socketContainer.getOut().writeObject(radius);
