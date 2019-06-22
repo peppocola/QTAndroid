@@ -34,21 +34,21 @@ public class DisplayResults extends AppCompatActivity {
         }
 
         TextView textView = findViewById(R.id.textView);
-        textView.setText(result);
 
-        boolean isEmpty = result.equals("empty");  //nullpointer
-        boolean isFull = !isEmpty && result.equals("full");
+        boolean isNull = result == null;
+        boolean isEmpty = !isNull && result.equals("empty");  //nullpointer
+        boolean isFull = !isNull && !isEmpty && result.equals("full");
 
         String title = "";
         String message = "";
 
         if (isFull) {
-            title = "Insieme vuoto!";
-            message = "Nessun dato da clusterizzare...\nProva a selezionare un'altra tabella";
+            title = "Raggio troppo piccolo";
+            message = "Tutti i dati sono finiti nello stesso cluster, prova a selezionare un raggio più piccolo.";
 
         } else if (isEmpty) {
-            title = "Singolo cluster";
-            message = "Tutti i dati sono finiti nello stesso cluster\nProva a selezionare un raggio più piccolo";
+            title = "Insieme vuoto!";
+            message = "Nessun dato da clusterizzare...\nProva a selezionare un'altra tabella";
         }
 
         if (isEmpty || isFull) { //da testare
@@ -62,19 +62,24 @@ public class DisplayResults extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             dialogInterface.cancel();
+                            MainActivity.openMainActivity(DisplayResults.this);
                         }
                     })
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             dialogInterface.cancel();
-                            onBackPressed(); //molti dubbi
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("type", type);
+                            AskData.openAskData(DisplayResults.this, bundle);
                         }
                     });
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+        } else {
+            textView.setText(result);
         }
 
         Button home = findViewById(R.id.home);
@@ -92,7 +97,9 @@ public class DisplayResults extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", type);
+                AskData.openAskData(DisplayResults.this, bundle);
             }
         });
     }
@@ -101,7 +108,6 @@ public class DisplayResults extends AppCompatActivity {
     public void onBackPressed() {
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
-        finish();
         AskData.openAskData(DisplayResults.this, bundle);
 
         super.onBackPressed();

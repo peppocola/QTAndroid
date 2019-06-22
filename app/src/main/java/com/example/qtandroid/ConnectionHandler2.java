@@ -200,12 +200,13 @@ public class ConnectionHandler2 {
 
         @Override
         protected String doInBackground(Void... voids) {
+            String result = "";
             try {
                 synchronized (lock) {
                     socketContainer.getOut().writeObject(3);
                     socketContainer.getOut().writeObject(tableName);
                     socketContainer.getOut().writeObject(radius);
-                    String result = (String) socketContainer.getIn().readObject();
+                    result = (String) socketContainer.getIn().readObject();
                     if (result.equals("OK")) {
                         return (String) socketContainer.getIn().readObject();
                     } else throw new ServerException(result);
@@ -215,7 +216,8 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                return "SERVER EXCEPTION";
+                if (result.equals("")) return "empty";  //check this
+                return "full";
             }
             return null;
         }
@@ -248,6 +250,7 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
+                System.out.println("equals:" + result.equals(""));
                 if (result.equals("")) return "empty";  //check this
                 return "full";
             }

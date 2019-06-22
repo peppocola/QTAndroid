@@ -104,7 +104,7 @@ public class AskData extends AppCompatActivity {
             if (ConnectionHandler2.getInstance().isConnected()) {
                 System.out.println("executed");
                 LinkedList<String> tables = ConnectionHandler2.getInstance().getTables();
-                tables.add(0, DEFAULT_SPINNER);
+                tables.add(0, DEFAULT_SPINNER); //nullpointer
                 adapter.addAll(tables);
             } else {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -186,6 +186,7 @@ public class AskData extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         ConnectionHandler2.getInstance().disconnect();
+        finish();
         super.onBackPressed();
     }
 
