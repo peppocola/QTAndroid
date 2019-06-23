@@ -4,7 +4,24 @@
     <string name="day_night">Day/Night</string>
     <string name="description">"QTAndroid è un client che permette di visualizzare i risultati di un clustering effettuato su server direttamente dallo smartphone!"</string>
     <string name="discover">"Dettagli"</string>
-    <string name="details">"Il clustering effettuato da QTAndroid utilizza l'algoritmo del QualityThreshold (QT)."</string>
+
+    <string name="details">
+"Il clustering effettuato da QTAndroid utilizza l'algoritmo del QualityThreshold (QT). Il clustering QT (Heyer, Kruglyak, Yooseph, 1999) è un metodo alternativo di partizionamento dei dati, inventato per il clustering genico. Richiede più potenza di calcolo rispetto a k-means, ma non richiede di specificare il numero di cluster a priori e restituisce sempre lo stesso risultato quando viene eseguito più volte.
+
+L'algoritmo è così definito:
+
+    &#8226;L'utente sceglie un diametro massimo per i cluster.
+
+    &#8226;Costruire un cluster candidato per ogni punto includendo iterativamente il punto più vicino al gruppo, finché il diametro del cluster supera la soglia.
+
+    &#8226;Salvare il cluster candidato con il maggior numero di punti come primo vero cluster e rimuovere tutti i punti nel cluster per evitare che vengano ri-esaminati. Si stabilisce cosa succede se più di 1 cluster ha il numero massimo di punti.
+
+    &#8226;Ripetere con il set ridotto di punti.
+
+
+La distanza tra un punto e un gruppo di punti viene calcolata utilizzando il \"complete linkage\", vale a dire la distanza massima dal punto a qualsiasi membro del gruppo."
+    </string>
+
     <string name="start">"Inizia subito!"</string>
     <string name="instructions">"Puoi scegliere di visualizzare un clustering già salvato su server inserendo il nome del file. Oppure puoi effettuare un nuovo clustering.\n(Connessione ad internet richiesta)"</string>
     <string name="newcluster">"Crea un nuovo clustering"</string>
