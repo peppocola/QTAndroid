@@ -31,6 +31,7 @@
     <string name="other">"Altro"</string>
 
     <string name="fill">"Riempi tutti i campi!"</string>
+    <string name="zeroradius">"Il raggio deve essere maggiore di 0!"</string>
 
     <string name="ServerUnreachableTitle">"Server irraggiungibile"</string>
     <string name="ServerUnreachableMessage">"Non riesco a contattare il server..."</string>

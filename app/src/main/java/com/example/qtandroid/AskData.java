@@ -147,31 +147,36 @@ public class AskData extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (enabled) {
-                    ConnectionUtils.checkConnection(context);
-                    String result = "";
-                    Bundle bundle = new Bundle();
 
-                    try {
+                    if (Double.parseDouble(radius) > 0) {
+                        ConnectionUtils.checkConnection(context);
+                        String result = "";
+                        Bundle bundle = new Bundle();
 
-                        switch (ID) {
-                            case NEW_CLUSTER:
-                                result = ConnectionHandler2.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                bundle.putInt("type", AskData.NEW_CLUSTER);
-                                break;
-                            case FILE_CLUSTER:
-                                result = ConnectionHandler2.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                bundle.putInt("type", AskData.FILE_CLUSTER);
-                                break;
-                            default:
+                        try {
+
+                            switch (ID) {
+                                case NEW_CLUSTER:
+                                    result = ConnectionHandler2.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt("type", AskData.NEW_CLUSTER);
+                                    break;
+                                case FILE_CLUSTER:
+                                    result = ConnectionHandler2.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt("type", AskData.FILE_CLUSTER);
+                                    break;
+                                default:
+                            }
+                            bundle.putString("result", result);
+                            DisplayResults.openDisplayResults(context, bundle);
+
+                        } catch (Exception e) {
+                            System.out.println("Bottone: " + e.getMessage());
+                            e.printStackTrace();
                         }
-                        bundle.putString("result", result);
-                        DisplayResults.openDisplayResults(context, bundle);
 
-                    } catch (Exception e) {
-                        System.out.println("Bottone: " + e.getMessage());
-                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.zeroradius, Toast.LENGTH_SHORT).show();
                     }
-
                 } else
                     Toast.makeText(getApplicationContext(), R.string.fill, Toast.LENGTH_SHORT).show();
             }
