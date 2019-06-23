@@ -43,7 +43,7 @@ public class DisplayResults extends AppCompatActivity {
         String message = "";
 
         if (isFull) {
-            title = "Raggio troppo piccolo";
+            title = "Raggio troppo grande";
             message = "Tutti i dati sono finiti nello stesso cluster, prova a selezionare un raggio più piccolo.";
 
         } else if (isEmpty) {
