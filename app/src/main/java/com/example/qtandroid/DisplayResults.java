@@ -23,8 +23,8 @@ public class DisplayResults extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeUtils.defaultTheme());
         Bundle bundle = getIntent().getExtras();
-        result = bundle.getString("result");
-        type = bundle.getInt("type");
+        result = bundle.getString(AskData.RESULT);
+        type = bundle.getInt(AskData.TYPE);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_results);
@@ -36,28 +36,28 @@ public class DisplayResults extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
 
         boolean isNull = result == null;
-        boolean isEmpty = !isNull && result.equals(ConnectionHandler2.EMPTY);
-        boolean isFull = !isNull && !isEmpty && result.equals(ConnectionHandler2.FULL);
-        boolean fileNotFound = !isNull && type == AskData.FILE_CLUSTER && result.equals(ConnectionHandler2.FNF);
+        boolean isEmpty = !isNull && result.equals(ConnectionHandler.EMPTY);
+        boolean isFull = !isNull && !isEmpty && result.equals(ConnectionHandler.FULL);
+        boolean fileNotFound = !isNull && type == AskData.FILE_CLUSTER && result.equals(ConnectionHandler.FNF);
 
 
         String title = "";
         String message = "";
 
         if (fileNotFound) {
-            title = "Il file non esiste";
-            message = "Il file ricercato non esiste.";
+            title = getResources().getString(R.string.TitleFNF);
+            message = getResources().getString(R.string.MessageFNF);
 
         } else if (isFull) {
-            title = "Raggio troppo grande";
-            message = "Tutti i dati sono finiti nello stesso cluster, prova a selezionare un raggio più piccolo.";
+            title = getResources().getString(R.string.TitleIsFull);
+            message = getResources().getString(R.string.MessageIsFull);
 
         } else if (isEmpty) {
-            title = "Insieme vuoto!";
-            message = "Nessun dato da clusterizzare...\nProva a selezionare un'altra tabella";
+            title = getResources().getString(R.string.TitleIsEmpty);
+            message = getResources().getString(R.string.MessageIsEmpty);
         }
 
-        if (isEmpty || isFull) { //da testare
+        if (isEmpty || isFull) {
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(DisplayResults.this);
             builder
@@ -77,7 +77,7 @@ public class DisplayResults extends AppCompatActivity {
                             dialogInterface.dismiss();
                             dialogInterface.cancel();
                             Bundle bundle = new Bundle();
-                            bundle.putInt("type", type);
+                            bundle.putInt(AskData.TYPE, type);
                             AskData.openAskData(DisplayResults.this, bundle);
                         }
                     });
@@ -104,7 +104,7 @@ public class DisplayResults extends AppCompatActivity {
                             dialogInterface.dismiss();
                             dialogInterface.cancel();
                             Bundle bundle = new Bundle();
-                            bundle.putInt("type", AskData.NEW_CLUSTER);
+                            bundle.putInt(AskData.TYPE, AskData.NEW_CLUSTER);
                             AskData.openAskData(DisplayResults.this, bundle);
                         }
                     });
@@ -121,7 +121,7 @@ public class DisplayResults extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConnectionHandler2.getInstance().disconnect();
+                ConnectionHandler.getInstance().disconnect();
                 MainActivity.openMainActivity(DisplayResults.this);
                 finish();
             }
@@ -131,7 +131,7 @@ public class DisplayResults extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("type", type);
+                bundle.putInt(AskData.TYPE, type);
                 AskData.openAskData(DisplayResults.this, bundle);
             }
         });
@@ -140,7 +140,7 @@ public class DisplayResults extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putInt(AskData.TYPE, type);
         AskData.openAskData(DisplayResults.this, bundle);
 
         super.onBackPressed();

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,7 +32,7 @@ final class ConnectionUtils {
                         if (absentConnection(context)) {
                             openConnectionDialog(context);
                         } else
-                            Toast.makeText(context, "Connessione stabilita! Premi VAI!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, R.string.ConnectionOK, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -42,40 +40,6 @@ final class ConnectionUtils {
         alertDialog.show();
     }
 
-    public static void openConnectionDialog(@NonNull final Context context, final RadioGroup select) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder
-                .setTitle(R.string.alertConnection)
-                .setMessage(R.string.alertConnectionMessage)
-                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ((AppCompatActivity) context).finish();
-                    }
-                })
-                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (ConnectionUtils.absentConnection(context)) {
-                            dialogInterface.dismiss();
-                            ConnectionUtils.openConnectionDialog(context, select);
-                        } else {
-                            Bundle bundle = new Bundle();
-                            if (select.getCheckedRadioButtonId() == R.id.newcluster) {
-                                bundle.putInt("key", AskData.NEW_CLUSTER);
-                                AskData.openAskData(context, bundle);
-                            } else if (select.getCheckedRadioButtonId() == R.id.filecluster) {
-                                bundle.putInt("key", AskData.FILE_CLUSTER);
-                                AskData.openAskData(context, bundle);
-                            } else dialogInterface.cancel();
-                        }
-
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
 
     public static boolean absentConnection(@NonNull Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

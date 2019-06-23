@@ -24,19 +24,21 @@ public class AskData extends AppCompatActivity {
 
     private int ID;
     private String radius = "";
-    private Button button;
     private Spinner spinner;
     private EditText askRadius;
     private boolean enabled = false;
-
     private AlertDialog alertDialog;
 
+    private static final String IP = "paologas91.ddns.net";
+    private static final int PORT = 8080;
+
+    public static final String TYPE = "type";
+    public static final String RESULT = "result";
     public static final String DEFAULT_SPINNER = "--------";
     public static final int NEW_CLUSTER = 1;
     public static final int FILE_CLUSTER = 2;
 
     public static void openAskData(Context context, Bundle bundle) {
-        System.out.println("NOn lo so" + context);
         ActivityUtils.openWithParams(AskData.class, context, bundle);
 
     }
@@ -51,7 +53,7 @@ public class AskData extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ID = -1;
         if (b != null)
-            ID = b.getInt("type");
+            ID = b.getInt(TYPE);
 
 
 
@@ -67,7 +69,7 @@ public class AskData extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
+        Button button;
         button = findViewById(R.id.eseguifc);
         setButton(button, AskData.this);
 
@@ -90,21 +92,19 @@ public class AskData extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
                 R.layout.color_spinner_layout);
 
         ConnectionUtils.checkConnection(this);
         try {
-            System.out.println("executing");
-            if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("192.168.0.7");
-                ConnectionHandler2.getInstance().setPort(8080);
-                ConnectionHandler2.getInstance().connect();
+            if (!ConnectionHandler.getInstance().isConnected()) {
+                ConnectionHandler.getInstance().setAddres(IP);
+                ConnectionHandler.getInstance().setPort(PORT);
+                ConnectionHandler.getInstance().connect();
             }
-            if (ConnectionHandler2.getInstance().isConnected()) {
-                System.out.println("executed");
-                LinkedList<String> tables = ConnectionHandler2.getInstance().getTables();
-                tables.add(0, DEFAULT_SPINNER); //nullpointer
+            if (ConnectionHandler.getInstance().isConnected()) {
+                LinkedList<String> tables = ConnectionHandler.getInstance().getTables();
+                tables.add(0, DEFAULT_SPINNER);
                 adapter.addAll(tables);
             } else {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -162,20 +162,19 @@ public class AskData extends AppCompatActivity {
 
                             switch (ID) {
                                 case NEW_CLUSTER:
-                                    result = ConnectionHandler2.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                    bundle.putInt("type", AskData.NEW_CLUSTER);
+                                    result = ConnectionHandler.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt(TYPE, AskData.NEW_CLUSTER);
                                     break;
                                 case FILE_CLUSTER:
-                                    result = ConnectionHandler2.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                    bundle.putInt("type", AskData.FILE_CLUSTER);
+                                    result = ConnectionHandler.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt(TYPE, AskData.FILE_CLUSTER);
                                     break;
                                 default:
                             }
-                            bundle.putString("result", result);
+                            bundle.putString(RESULT, result);
                             DisplayResults.openDisplayResults(context, bundle);
 
                         } catch (Exception e) {
-                            System.out.println("Bottone: " + e.getMessage());
                             e.printStackTrace();
                         }
 
@@ -190,7 +189,7 @@ public class AskData extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ConnectionHandler2.getInstance().disconnect();
+        ConnectionHandler.getInstance().disconnect();
         finish();
         super.onBackPressed();
     }
