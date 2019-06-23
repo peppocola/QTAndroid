@@ -16,7 +16,7 @@ public class ConnectionHandler2 {
 
     private SocketContainer socketContainer;
     private static ConnectionHandler2 conn = new ConnectionHandler2();
-    private Object lock = new Object();
+    private final Object lock = new Object();
     private String ip;
     private int port;
     private String currentTable = "";
@@ -159,6 +159,7 @@ public class ConnectionHandler2 {
                         socketContainer.getOut().writeObject(5);
                         socketContainer.getSocket().close();
                         connected = false;
+                        currentTable = "";
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -235,6 +236,7 @@ public class ConnectionHandler2 {
         @Override
         protected String doInBackground(Void... voids) {
             String result = "";
+            boolean error = true;
             try {
                 synchronized (lock) {
                     if (!currentTable.equals(tableName)) {
@@ -243,6 +245,7 @@ public class ConnectionHandler2 {
                     }
                     result = learningFromDbTable(radius);
                     storeClusterInFile();
+                    error = false;
                     return result;
                 }
             } catch (ClassNotFoundException e) {
@@ -253,6 +256,10 @@ public class ConnectionHandler2 {
                 System.out.println("equals:" + result.equals(""));
                 if (result.equals("")) return "empty";  //check this
                 return "full";
+            } finally {
+                if (error) {
+                    disconnect();
+                }
             }
             return null;
         }
