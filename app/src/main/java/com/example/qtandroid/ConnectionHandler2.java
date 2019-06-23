@@ -22,6 +22,11 @@ public class ConnectionHandler2 {
     private String currentTable = "";
     private boolean connected;
 
+    public static final String EMPTY = "empty";
+    public static final String FULL = "full";
+    public static final String FNF = "filenotfound";
+
+
     private ConnectionHandler2() {
     }
 
@@ -202,6 +207,7 @@ public class ConnectionHandler2 {
         @Override
         protected String doInBackground(Void... voids) {
             String result = "";
+            boolean error = true;
             try {
                 synchronized (lock) {
                     socketContainer.getOut().writeObject(3);
@@ -209,6 +215,7 @@ public class ConnectionHandler2 {
                     socketContainer.getOut().writeObject(radius);
                     result = (String) socketContainer.getIn().readObject();
                     if (result.equals("OK")) {
+                        error = false;
                         return (String) socketContainer.getIn().readObject();
                     } else throw new ServerException(result);
                 }
@@ -217,8 +224,12 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                if (result.equals("")) return "empty";  //check this
-                return "full";
+                System.out.println(result);
+                return result;
+            } finally {
+                if (error) {
+                    disconnect();
+                }
             }
             return null;
         }
@@ -253,9 +264,8 @@ public class ConnectionHandler2 {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                System.out.println("equals:" + result.equals(""));
-                if (result.equals("")) return "empty";  //check this
-                return "full";
+                if (result.equals(EMPTY)) return EMPTY;
+                return FULL;
             } finally {
                 if (error) {
                     disconnect();

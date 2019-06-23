@@ -36,13 +36,19 @@ public class DisplayResults extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
 
         boolean isNull = result == null;
-        boolean isEmpty = !isNull && result.equals("empty");  //nullpointer
-        boolean isFull = !isNull && !isEmpty && result.equals("full");
+        boolean isEmpty = !isNull && result.equals(ConnectionHandler2.EMPTY);
+        boolean isFull = !isNull && !isEmpty && result.equals(ConnectionHandler2.FULL);
+        boolean fileNotFound = !isNull && type == AskData.FILE_CLUSTER && result.equals(ConnectionHandler2.FNF);
+
 
         String title = "";
         String message = "";
 
-        if (isFull) {
+        if (fileNotFound) {
+            title = "Il file non esiste";
+            message = "Il file ricercato non esiste.";
+
+        } else if (isFull) {
             title = "Raggio troppo grande";
             message = "Tutti i dati sono finiti nello stesso cluster, prova a selezionare un raggio più piccolo.";
 
@@ -78,6 +84,33 @@ public class DisplayResults extends AppCompatActivity {
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+        } else if (fileNotFound) {
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(DisplayResults.this);
+            builder
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            dialogInterface.cancel();
+                            MainActivity.openMainActivity(DisplayResults.this);
+                        }
+                    })
+                    .setPositiveButton(R.string.GoToNewCluster, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            dialogInterface.cancel();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("type", AskData.NEW_CLUSTER);
+                            AskData.openAskData(DisplayResults.this, bundle);
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
         } else {
             textView.setText(result);
         }

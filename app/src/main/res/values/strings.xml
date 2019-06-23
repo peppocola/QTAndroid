@@ -45,5 +45,7 @@
     <string name="Contributor2">"&#8226; <a href="http://github.com/paologas91">Paolo Gasparro"</a></string>
     <string name="Contributor3">"&#8226; <a href="http://github.com/GreenSully">Antonio Grisulli"</a></string>
 
+    <string name="GoToNewCluster">"Passa a \"Crea un nuovo cluster\""</string>
+
 
 </resources>
