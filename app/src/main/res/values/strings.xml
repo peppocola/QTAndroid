@@ -10,11 +10,11 @@
 
 L'algoritmo è così definito:
 
-    &#8226;L'utente sceglie un diametro massimo per i cluster.
+    &#8226;L'utente sceglie un raggio massimo per i cluster.
 
-    &#8226;Costruire un cluster candidato per ogni punto includendo iterativamente il punto più vicino al gruppo, finché il diametro del cluster supera la soglia.
+    &#8226;Costruire un cluster candidato per ogni punto includendo iterativamente il punto più vicino al gruppo, finché il raggio del cluster supera la soglia.
 
-    &#8226;Salvare il cluster candidato con il maggior numero di punti come primo vero cluster e rimuovere tutti i punti nel cluster per evitare che vengano ri-esaminati. Si stabilisce cosa succede se più di 1 cluster ha il numero massimo di punti.
+    &#8226;Salvare il cluster candidato con il maggior numero di punti come primo vero cluster e rimuovere tutti i punti nel cluster per evitare che vengano ri-esaminati. Si stabilisce cosa succede se più di un cluster ha il numero massimo di punti.
 
     &#8226;Ripetere con il set ridotto di punti.
 
@@ -64,8 +64,6 @@ La distanza tra un punto e un gruppo di punti viene calcolata utilizzando il \"c
 
     <string name="GoToNewCluster">"Passa a \"Crea un nuovo cluster\""</string>
 
-    <string name="ConnectionOK">"Connessione stabilita! Premi VAI!"</string>
-
     <string name="TitleFNF">"Il file non esiste"</string>
     <string name="MessageFNF">"Il file ricercato non esiste."</string>
 
@@ -74,6 +72,7 @@ La distanza tra un punto e un gruppo di punti viene calcolata utilizzando il \"c
 
     <string name="TitleIsEmpty">"Insieme vuoto!"</string>
     <string name="MessageIsEmpty">"Nessun dato da clusterizzare&#8230;\nProva a selezionare un'altra tabella"</string>
+    <string name="ConnectionOK">Connessione stabilita! Premi VAI!</string>
 
 
 </resources>
