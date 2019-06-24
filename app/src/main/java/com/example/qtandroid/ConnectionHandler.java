@@ -249,7 +249,7 @@ public class ConnectionHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
-                if (result.equals(EMPTY)) return EMPTY;
+                if (e.getMessage().equals(EMPTY)) return EMPTY;
                 return FULL;
             } finally {
                 if (error) {
