@@ -58,7 +58,6 @@ public class AskData extends AppCompatActivity {
 
 
         TextView textView = findViewById(R.id.titolox);
-        System.out.println(ID);
         if (ID == NEW_CLUSTER) {
             textView.setText(R.string.newcluster);
         } else if (ID == FILE_CLUSTER) {

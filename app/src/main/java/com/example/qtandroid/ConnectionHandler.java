@@ -238,6 +238,7 @@ public class ConnectionHandler {
                         storeTableFromDb(tableName);
                         currentTable = tableName;
                     }
+
                     result = learningFromDbTable(radius);
                     storeClusterInFile();
                     error = false;

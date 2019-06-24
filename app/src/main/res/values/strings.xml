@@ -10,16 +10,14 @@
 
 L'algoritmo è così definito:
 
-    &#8226;L'utente sceglie un raggio massimo per i cluster.
+    1. L'utente sceglie un raggio massimo per i cluster.
 
-    &#8226;Costruire un cluster candidato per ogni punto includendo iterativamente il punto più vicino al gruppo, finché il raggio del cluster supera la soglia.
+    2. Costruire un cluster candidato per ogni punto includendo i punto con distanza inferiore al raggio.
 
-    &#8226;Salvare il cluster candidato con il maggior numero di punti come primo vero cluster e rimuovere tutti i punti nel cluster per evitare che vengano ri-esaminati. Si stabilisce cosa succede se più di un cluster ha il numero massimo di punti.
+    3. Salvare il cluster candidato con il maggior numero di punti come primo vero cluster e rimuovere tutti i punti del cluster per evitare che vengano ri-esaminati. Si stabilisce cosa succede se più di un cluster ha il numero massimo di punti.
 
-    &#8226;Ripetere con il set ridotto di punti.
+    4. Ripetere dal punto 2 con il set ridotto di punti se il set non è vuoto."
 
-
-La distanza tra un punto e un gruppo di punti viene calcolata utilizzando il \"complete linkage\", vale a dire la distanza massima dal punto a qualsiasi membro del gruppo."
     </string>
 
     <string name="start">"Inizia subito!"</string>
