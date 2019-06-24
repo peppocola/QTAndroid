@@ -40,7 +40,6 @@ public class DisplayResults extends AppCompatActivity {
         boolean isFull = !isNull && !isEmpty && result.equals(ConnectionHandler.FULL);
         boolean fileNotFound = !isNull && type == AskData.FILE_CLUSTER && result.equals(ConnectionHandler.FNF);
 
-
         String title = "";
         String message = "";
 
