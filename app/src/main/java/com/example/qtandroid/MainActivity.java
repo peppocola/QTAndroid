@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(ThemeUtils.defaultTheme());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_main);
 
         DarkSwitch = findViewById(R.id.DarkSwitch);
         DarkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode()==MODE_NIGHT_YES);
@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Bundle bundle = new Bundle();
                     if (isNewCluster) {
-                        bundle.putInt("type", AskData.NEW_CLUSTER);
+                        bundle.putInt(AskData.TYPE, AskData.NEW_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskData(context, bundle);
-                    } else if (isFileCluster) {
-                        bundle.putInt("type", AskData.FILE_CLUSTER);
+                    } else {
+                        bundle.putInt(AskData.TYPE, AskData.FILE_CLUSTER);
                         progressBar.setVisibility(View.VISIBLE);
                         AskData.openAskData(context, bundle);
                     }

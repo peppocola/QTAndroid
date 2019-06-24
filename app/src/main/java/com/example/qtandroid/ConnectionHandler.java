@@ -1,9 +1,6 @@
 package com.example.qtandroid;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,167 +8,282 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 
-public class ConnectionHandler extends AsyncTask<String, Void, String> {
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+public class ConnectionHandler {
 
-    private Context context;
-    private ProgressDialog progress;
+    private SocketContainer socketContainer;
+    private static ConnectionHandler conn = new ConnectionHandler();
+    private final Object lock = new Object();
+    private String ip;
+    private int port;
+    private String currentTable = "";
+    private boolean connected;
 
-    public static final String ERROR = "error";
-    public static final String DONE = "done";
+    public static final String OK = "ok";
+    public static final String EMPTY = "empty";
+    public static final String FULL = "full";
+    public static final String FNF = "filenotfound";
 
-    public static final String STORE_TABLE = "0";
-    public static final String LEARN_DB = "1";
-    public static final String SAVE_FILE = "2";
-    public static final String LEARN_FILE = "3";
-    public static final String GET_TABLES = "4";
 
-    private String result = "";
-    private LinkedList<String> tables = new LinkedList<String>();
-
-    public ConnectionHandler(Context context) {
-        this.context = context;
+    private ConnectionHandler() {
     }
 
-    @Override
-    protected String doInBackground(String... strings) {
+    public void setAddres(String ip) {
+        this.ip = ip;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public static ConnectionHandler getInstance() {
+        return conn;
+    }
+
+    public void connect() {
         try {
-            InetAddress add = InetAddress.getByName("paologas91.ddns.net");
-            try {
-                Socket s = new Socket();
-                s.connect(new InetSocketAddress(add, 8080), 5000);
-                out = new ObjectOutputStream(s.getOutputStream());
-                in = new ObjectInputStream(s.getInputStream());
+            socketContainer = new CreateSocket(ip, port).execute().get();
+            if (socketContainer != null) {
+                connected = true;
 
-                switch (strings[0]) {
-                    case STORE_TABLE:
-                        storeTableFromDb(strings[1]);
-                        break;
-                    case LEARN_DB:
-                        result = learningFromDbTable(strings[1], Double.parseDouble(strings[2]));
-                        break;
-                    case SAVE_FILE:
-                        storeClusterInFile();
-                        break;
-                    case LEARN_FILE:
-                        result = learnFromFile(strings[1], Double.parseDouble(strings[2]));
-                        break;
-                    case GET_TABLES:
-                        tables = getTableNames();
-                        break;
-                    default:
-                }
-                s.close();
-
-            } catch (SocketTimeoutException e) {
-                return ERROR;
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
             }
-        } catch (UnknownHostException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }
-        return DONE + strings[0];
-    }
-
-    @Override
-    protected void onPreExecute() {
-
-        progress = new ProgressDialog(context);
-        progress.setTitle("Stabilendo la connessione...");
-        progress.setMessage("attendi...");
-        progress.show();
-
-    }
-
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public LinkedList<String> getTables() {
-        return tables;
-    }
-
-    private String learnFromFile(String tableName, double radius) throws IOException, ClassNotFoundException, ServerException {
-        out.writeObject(3);
-        out.writeObject(tableName);
-        out.writeObject(radius);
-        String result = (String) in.readObject();
-        if (result.equals("OK")) {
-            return (String) in.readObject();
+            connected = false;
         }
 
-        else throw new ServerException(result);
     }
 
-    private void storeTableFromDb(String tableName) throws ServerException, IOException, ClassNotFoundException {
-        out.writeObject(0);
-        out.writeObject(tableName);
-        String result = (String) in.readObject();
-        if (!result.equals("OK"))
-            throw new ServerException(result);
+    public void disconnect() {
+        new Disconnect().execute();
     }
 
-    private String learningFromDbTable(String tableName, Double radius) throws ServerException, IOException, ClassNotFoundException {
+    public boolean isConnected() {
+        return connected;
+    }
 
-        storeTableFromDb(tableName);
-        out.writeObject(1);
+    public LinkedList<String> getTables() throws InterruptedException, ExecutionException {
+        return new GetTables().execute().get();
+    }
 
-        out.writeObject(radius);
-        result = (String) in.readObject();
-        if (result.equals("OK")) {
-            result = "Number of Clusters:" + in.readObject() + "\n";
-            result += (String) in.readObject();
-            return result;
-        } else throw new ServerException(result);
+    public String learnFile(String tableName, double radius) throws InterruptedException, ExecutionException {
+        return new LearnFile(tableName, radius).execute().get();
+    }
+
+    public String learnDB(String tableName, double radius) throws InterruptedException, ExecutionException {
+        return new LearnDB(tableName, radius).execute().get();
+    }
+
+
+    private class SocketContainer {
+
+        private Socket socket;
+        private ObjectInputStream in;
+        private ObjectOutputStream out;
+
+
+        public SocketContainer(Socket socket, ObjectInputStream in, ObjectOutputStream out) {
+            this.socket = socket;
+            this.in = in;
+            this.out = out;
+        }
+
+        public ObjectInputStream getIn() {
+            return in;
+        }
+
+        public Socket getSocket() {
+            return socket;
+        }
+
+        public ObjectOutputStream getOut() {
+            return out;
+        }
 
     }
 
-    private void storeClusterInFile() throws ServerException, IOException, ClassNotFoundException {
-        out.writeObject(2);
-        String result = (String) in.readObject();
-        if (!result.equals("OK"))
-            throw new ServerException(result);
-    }
+    private class CreateSocket extends AsyncTask<Void, Void, SocketContainer> {
 
-    private LinkedList<String> getTableNames() throws IOException, ClassNotFoundException {
-        out.writeObject(4);
-        return (LinkedList<String>) in.readObject();
-    }
+        private String address;
+        private int port;
 
-    @Override
-    protected void onPostExecute (String a) {
-        progress.dismiss();
-        System.out.println(a);
-        if (!a.contains(GET_TABLES) && !a.equals(ERROR)) {
+        private CreateSocket(String address, int port) {
+            this.address = address;
+            this.port = port;
+        }
 
-            Bundle bundle = new Bundle();
-            bundle.putString("result", getResult());
-            if (a.contains(LEARN_DB)) {
-                bundle.putInt("type", AskData.NEW_CLUSTER);
-            } else {
-                bundle.putInt("type", AskData.FILE_CLUSTER);
+
+        @Override
+        protected SocketContainer doInBackground(Void... voids) {
+            try {
+                InetAddress add = InetAddress.getByName(address);
+                Socket socket = new Socket();
+                socket.connect(new InetSocketAddress(add, port), 5000);
+                return new SocketContainer(socket, new ObjectInputStream(socket.getInputStream()), new ObjectOutputStream(socket.getOutputStream()));
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(SocketContainer sc) {
+            super.onPostExecute(sc);
+            synchronized (lock) {
+                socketContainer = sc;
             }
 
-            DisplayResults.openDisplayResults(context, bundle);
         }
-
-
     }
 
+    private class Disconnect extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            synchronized (lock) {
+                try {
+                    if (connected) {
+                        socketContainer.getOut().writeObject(5);
+                        socketContainer.getSocket().close();
+                        connected = false;
+                        currentTable = "";
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+    }
+
+    private class GetTables extends AsyncTask<Void, Void, LinkedList<String>> {
+
+
+        @Override
+        protected LinkedList<String> doInBackground(Void... voids) {
+            try {
+                synchronized (lock) {
+                    socketContainer.getOut().writeObject(4);
+                    return (LinkedList<String>) socketContainer.getIn().readObject();
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class LearnFile extends AsyncTask<Void, Void, String> {
+        private String tableName;
+        private double radius;
+
+        private LearnFile(String tableName, double radius) {
+            this.tableName = tableName;
+            this.radius = radius;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            boolean error = true;
+            try {
+                synchronized (lock) {
+                    socketContainer.getOut().writeObject(3);
+                    socketContainer.getOut().writeObject(tableName);
+                    socketContainer.getOut().writeObject(radius);
+                    result = (String) socketContainer.getIn().readObject();
+                    if (result.equals(OK)) {
+                        error = false;
+                        return (String) socketContainer.getIn().readObject();
+                    } else throw new ServerException(result);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServerException e) {
+                return result;
+            } finally {
+                if (error) {
+                    disconnect();
+                }
+            }
+            return null;
+        }
+    }
+
+    private class LearnDB extends AsyncTask<Void, Void, String> {
+        private String tableName;
+        private double radius;
+
+        private LearnDB(String tableName, double radius) {
+            this.tableName = tableName;
+            this.radius = radius;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            boolean error = true;
+            try {
+                synchronized (lock) {
+                    if (!currentTable.equals(tableName)) {
+                        storeTableFromDb(tableName);
+                        currentTable = tableName;
+                    }
+                    result = learningFromDbTable(radius);
+                    storeClusterInFile();
+                    error = false;
+                    return result;
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServerException e) {
+                if (result.equals(EMPTY)) return EMPTY;
+                return FULL;
+            } finally {
+                if (error) {
+                    disconnect();
+                }
+            }
+            return null;
+        }
+
+        private void storeTableFromDb(String tableName) throws ServerException, IOException, ClassNotFoundException {
+            socketContainer.getOut().writeObject(0);
+            socketContainer.getOut().writeObject(tableName);
+            String result = (String) socketContainer.getIn().readObject();
+            if (!result.equals(OK))
+                throw new ServerException(result);
+        }
+
+        private String learningFromDbTable(Double radius) throws ServerException, IOException, ClassNotFoundException {
+            socketContainer.getOut().writeObject(1);
+
+            socketContainer.getOut().writeObject(radius);
+            String result = (String) socketContainer.getIn().readObject();
+            if (result.equals(OK)) {
+                result = "Number of Clusters:" + socketContainer.getIn().readObject() + "\n";
+                result += (String) socketContainer.getIn().readObject();
+                return result;
+            } else throw new ServerException(result);
+
+        }
+
+        private void storeClusterInFile() throws ServerException, IOException, ClassNotFoundException {
+            socketContainer.getOut().writeObject(2);
+            String result = (String) socketContainer.getIn().readObject();
+            if (!result.equals(OK))
+                throw new ServerException(result);
+        }
+    }
 }

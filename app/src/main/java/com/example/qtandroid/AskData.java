@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,17 +24,21 @@ public class AskData extends AppCompatActivity {
 
     private int ID;
     private String radius = "";
-    private Button button;
     private Spinner spinner;
     private EditText askRadius;
     private boolean enabled = false;
+    private AlertDialog alertDialog;
 
+    private static final String IP = "paologas91.ddns.net";
+    private static final int PORT = 8080;
+
+    public static final String TYPE = "type";
+    public static final String RESULT = "result";
     public static final String DEFAULT_SPINNER = "--------";
     public static final int NEW_CLUSTER = 1;
     public static final int FILE_CLUSTER = 2;
 
     public static void openAskData(Context context, Bundle bundle) {
-        System.out.println("NOn lo so" + context);
         ActivityUtils.openWithParams(AskData.class, context, bundle);
 
     }
@@ -44,14 +47,15 @@ public class AskData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         setTheme(ThemeUtils.defaultTheme());
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ask_data);
 
         Bundle b = getIntent().getExtras();
         ID = -1;
         if (b != null)
-            ID = b.getInt("type");
+            ID = b.getInt(TYPE);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ask_data);
+
 
         TextView textView = findViewById(R.id.titolox);
         System.out.println(ID);
@@ -65,7 +69,7 @@ public class AskData extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
+        Button button;
         button = findViewById(R.id.eseguifc);
         setButton(button, AskData.this);
 
@@ -88,20 +92,18 @@ public class AskData extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
                 R.layout.color_spinner_layout);
 
         ConnectionUtils.checkConnection(this);
         try {
-            System.out.println("executing");
-            if (!ConnectionHandler2.getInstance().isConnected()) {
-                ConnectionHandler2.getInstance().setAddres("paologas91.ddns.net");
-                ConnectionHandler2.getInstance().setPort(8080);
-                ConnectionHandler2.getInstance().connect();
+            if (!ConnectionHandler.getInstance().isConnected()) {
+                ConnectionHandler.getInstance().setAddres(IP);
+                ConnectionHandler.getInstance().setPort(PORT);
+                ConnectionHandler.getInstance().connect();
             }
-            if (ConnectionHandler2.getInstance().isConnected()) {
-                System.out.println("executed");
-                LinkedList<String> tables = ConnectionHandler2.getInstance().getTables();
+            if (ConnectionHandler.getInstance().isConnected()) {
+                LinkedList<String> tables = ConnectionHandler.getInstance().getTables();
                 tables.add(0, DEFAULT_SPINNER);
                 adapter.addAll(tables);
             } else {
@@ -115,8 +117,11 @@ public class AskData extends AppCompatActivity {
                                 MainActivity.openMainActivity(AskData.this);
                                 (AskData.this).finish();
                             }
-                        });
-                AlertDialog alertDialog = builder.create();
+                        })
+                        .setCancelable(false);
+
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.show();
             }
         } catch (ExecutionException e) {
@@ -157,20 +162,19 @@ public class AskData extends AppCompatActivity {
 
                             switch (ID) {
                                 case NEW_CLUSTER:
-                                    result = ConnectionHandler2.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                    bundle.putInt("type", AskData.NEW_CLUSTER);
+                                    result = ConnectionHandler.getInstance().learnDB(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt(TYPE, AskData.NEW_CLUSTER);
                                     break;
                                 case FILE_CLUSTER:
-                                    result = ConnectionHandler2.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
-                                    bundle.putInt("type", AskData.FILE_CLUSTER);
+                                    result = ConnectionHandler.getInstance().learnFile(spinner.getSelectedItem().toString(), Double.parseDouble(radius));
+                                    bundle.putInt(TYPE, AskData.FILE_CLUSTER);
                                     break;
                                 default:
                             }
-                            bundle.putString("result", result);
+                            bundle.putString(RESULT, result);
                             DisplayResults.openDisplayResults(context, bundle);
 
                         } catch (Exception e) {
-                            System.out.println("Bottone: " + e.getMessage());
                             e.printStackTrace();
                         }
 
@@ -185,9 +189,8 @@ public class AskData extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ProgressBar progressBar = findViewById(R.id.progress_circular);
-        progressBar.setVisibility(View.INVISIBLE);
-        ConnectionHandler2.getInstance().diconnect();
+        ConnectionHandler.getInstance().disconnect();
+        finish();
         super.onBackPressed();
     }
 
@@ -196,5 +199,22 @@ public class AskData extends AppCompatActivity {
         super.onPostResume();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+    }
 
 }
