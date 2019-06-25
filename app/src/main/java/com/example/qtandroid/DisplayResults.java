@@ -17,8 +17,8 @@ import com.example.qtandroid.utils.ThemeUtils;
 
 public class DisplayResults extends AppCompatActivity {
 
-    int type;
-    String result;
+    private int type;
+    private String result;
 
     public static void openDisplayResults(Context context, Bundle bundle) {
         ActivityUtils.openWithParams(DisplayResults.class, context, bundle);
