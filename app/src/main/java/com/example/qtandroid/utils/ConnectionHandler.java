@@ -31,7 +31,7 @@ public class ConnectionHandler {
     private ConnectionHandler() {
     }
 
-    public void setAddres(String ip) {
+    public void setAddress(String ip) {
         this.ip = ip;
     }
 

@@ -102,7 +102,7 @@ public class AskData extends AppCompatActivity {
         ConnectionUtils.checkConnection(this);
         try {
             if (!ConnectionHandler.getInstance().isConnected()) {
-                ConnectionHandler.getInstance().setAddres(IP);
+                ConnectionHandler.getInstance().setAddress(IP);
                 ConnectionHandler.getInstance().setPort(PORT);
                 ConnectionHandler.getInstance().connect();
             }
