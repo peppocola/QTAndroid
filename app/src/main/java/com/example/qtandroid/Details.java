@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qtandroid.utils.ActivityUtils;
+import com.example.qtandroid.utils.ThemeUtils;
+
 public class Details extends AppCompatActivity {
 
     public static void openDetails(Context context) {

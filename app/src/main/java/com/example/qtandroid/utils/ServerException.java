@@ -1,4 +1,4 @@
-package com.example.qtandroid;
+package com.example.qtandroid.utils;
 
 public class ServerException extends Exception {
 

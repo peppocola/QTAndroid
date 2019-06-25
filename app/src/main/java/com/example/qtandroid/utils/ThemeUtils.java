@@ -1,4 +1,4 @@
-package com.example.qtandroid;
+package com.example.qtandroid.utils;
 
 import android.content.Context;
 import android.widget.CompoundButton;
@@ -7,15 +7,19 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.qtandroid.R;
+
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 public final class ThemeUtils {
 
+    private ThemeUtils() {
+    }
 
     public static int defaultTheme() {
-        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
-            return(R.style.DarkMode);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            return (R.style.DarkMode);
         } else {
             return (R.style.AppTheme);
         }

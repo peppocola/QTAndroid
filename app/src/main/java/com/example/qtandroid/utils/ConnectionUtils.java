@@ -1,4 +1,4 @@
-package com.example.qtandroid;
+package com.example.qtandroid.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-final class ConnectionUtils {
+import com.example.qtandroid.MainActivity;
+import com.example.qtandroid.R;
+
+public final class ConnectionUtils {
 
     private ConnectionUtils() {
     }
@@ -35,6 +38,25 @@ final class ConnectionUtils {
                             Toast.makeText(context, R.string.ConnectionOK, Toast.LENGTH_LONG).show();
                     }
                 });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public static void openConnectionDialogAbort(@NonNull final Context context) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder
+                .setTitle(R.string.alertConnection)
+                .setMessage(R.string.alertConnectionMessage)
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ((AppCompatActivity) context).finish();
+                        MainActivity.openMainActivity(context);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setCancelable(false);
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

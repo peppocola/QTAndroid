@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qtandroid.utils.ActivityUtils;
+import com.example.qtandroid.utils.ThemeUtils;
+
 public class Contacts extends AppCompatActivity {
 
     public static void openContacts(Context context) {

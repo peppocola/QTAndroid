@@ -10,6 +10,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qtandroid.utils.ActivityUtils;
+import com.example.qtandroid.utils.ConnectionHandler;
+import com.example.qtandroid.utils.ConnectionUtils;
+import com.example.qtandroid.utils.ThemeUtils;
+
 public class DisplayResults extends AppCompatActivity {
 
     int type;
@@ -42,6 +47,7 @@ public class DisplayResults extends AppCompatActivity {
 
         String title = "";
         String message = "";
+
 
         if (fileNotFound) {
             title = getResources().getString(R.string.TitleFNF);
@@ -131,19 +137,33 @@ public class DisplayResults extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(AskData.TYPE, type);
-                AskData.openAskData(DisplayResults.this, bundle);
+                if (ConnectionUtils.absentConnection(DisplayResults.this)) {
+                    ConnectionUtils.openConnectionDialogAbort(DisplayResults.this);
+                    ConnectionHandler.getInstance().disconnect();
+                } else AskData.openAskData(DisplayResults.this, bundle);
             }
         });
     }
 
     @Override
     public void onBackPressed() {
+
         Bundle bundle = new Bundle();
         bundle.putInt(AskData.TYPE, type);
-        AskData.openAskData(DisplayResults.this, bundle);
+        if (ConnectionUtils.absentConnection(DisplayResults.this)) {
+            ConnectionUtils.openConnectionDialogAbort(DisplayResults.this);
+            ConnectionHandler.getInstance().disconnect();
+        } else {
+            finish();
+            AskData.openAskData(DisplayResults.this, bundle);
+        }
 
         super.onBackPressed();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        ConnectionHandler.getInstance().disconnect();
+        super.onDestroy();
+    }
 }

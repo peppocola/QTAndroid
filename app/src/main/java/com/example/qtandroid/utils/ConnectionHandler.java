@@ -1,4 +1,4 @@
-package com.example.qtandroid;
+package com.example.qtandroid.utils;
 
 import android.os.AsyncTask;
 
@@ -192,7 +192,6 @@ public class ConnectionHandler {
         @Override
         protected String doInBackground(Void... voids) {
             String result = "";
-            boolean error = true;
             try {
                 synchronized (lock) {
                     socketContainer.getOut().writeObject(3);
@@ -200,7 +199,6 @@ public class ConnectionHandler {
                     socketContainer.getOut().writeObject(radius);
                     result = (String) socketContainer.getIn().readObject();
                     if (result.equals(OK)) {
-                        error = false;
                         return (String) socketContainer.getIn().readObject();
                     } else throw new ServerException(result);
                 }
@@ -210,10 +208,6 @@ public class ConnectionHandler {
                 e.printStackTrace();
             } catch (ServerException e) {
                 return result;
-            } finally {
-                if (error) {
-                    disconnect();
-                }
             }
             return null;
         }
@@ -231,7 +225,6 @@ public class ConnectionHandler {
         @Override
         protected String doInBackground(Void... voids) {
             String result = "";
-            boolean error = true;
             try {
                 synchronized (lock) {
                     if (!currentTable.equals(tableName)) {
@@ -241,7 +234,6 @@ public class ConnectionHandler {
 
                     result = learningFromDbTable(radius);
                     storeClusterInFile();
-                    error = false;
                     return result;
                 }
             } catch (ClassNotFoundException e) {
@@ -251,10 +243,6 @@ public class ConnectionHandler {
             } catch (ServerException e) {
                 if (e.getMessage().equals(EMPTY)) return EMPTY;
                 return FULL;
-            } finally {
-                if (error) {
-                    disconnect();
-                }
             }
             return null;
         }
@@ -286,5 +274,7 @@ public class ConnectionHandler {
             if (!result.equals(OK))
                 throw new ServerException(result);
         }
+
+
     }
 }

@@ -17,6 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qtandroid.utils.ActivityUtils;
+import com.example.qtandroid.utils.ConnectionHandler;
+import com.example.qtandroid.utils.ConnectionUtils;
+import com.example.qtandroid.utils.ThemeUtils;
+
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
@@ -29,7 +34,7 @@ public class AskData extends AppCompatActivity {
     private boolean enabled = false;
     private AlertDialog alertDialog;
 
-    private static final String IP = "paologas91.ddns.net";
+    private static final String IP = "192.168.1.242";
     private static final int PORT = 8080;
 
     public static final String TYPE = "type";
@@ -171,7 +176,10 @@ public class AskData extends AppCompatActivity {
                                 default:
                             }
                             bundle.putString(RESULT, result);
-                            DisplayResults.openDisplayResults(context, bundle);
+                            if (ConnectionUtils.absentConnection(AskData.this)) {
+                                ConnectionUtils.openConnectionDialogAbort(AskData.this);
+                                ConnectionHandler.getInstance().disconnect();
+                            } else DisplayResults.openDisplayResults(context, bundle);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -188,7 +196,6 @@ public class AskData extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ConnectionHandler.getInstance().disconnect();
         finish();
         super.onBackPressed();
     }
@@ -205,15 +212,7 @@ public class AskData extends AppCompatActivity {
             alertDialog.dismiss();
             alertDialog = null;
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-            alertDialog = null;
-        }
+        ConnectionHandler.getInstance().disconnect();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.qtandroid;
+package com.example.qtandroid.utils;
 
 import android.content.Context;
 import android.content.Intent;
