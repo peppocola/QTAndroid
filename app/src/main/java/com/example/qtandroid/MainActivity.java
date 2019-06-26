@@ -26,7 +26,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Switch DarkSwitch;
+    private Switch darkSwitch;
     private ProgressBar progressBar;
 
     private RadioGroup select;
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DarkSwitch = findViewById(R.id.DarkSwitch);
-        DarkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode()==MODE_NIGHT_YES);
+        darkSwitch = findViewById(R.id.DarkSwitch);
+        darkSwitch.setChecked(AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES);
 
-        ThemeUtils.listen(MainActivity.this, DarkSwitch);
+        ThemeUtils.listen(MainActivity.this, darkSwitch);
 
         Button buttonDetails;
         Button buttonCluster;

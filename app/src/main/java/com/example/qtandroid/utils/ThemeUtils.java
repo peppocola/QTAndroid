@@ -25,8 +25,8 @@ public final class ThemeUtils {
         }
     }
 
-    public static void listen(final Context context, Switch DarkSwitch) {
-        DarkSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    public static void listen(final Context context, Switch darkSwitch) {
+        darkSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
