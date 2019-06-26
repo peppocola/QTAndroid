@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.qtandroid.R;
@@ -25,8 +24,8 @@ public class SettingsDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        androidx.appcompat.app.AlertDialog.Builder builder;
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        AlertDialog.Builder builder;
+        if (ThemeUtils.isDarkMode()) {
             builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
         } else builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();

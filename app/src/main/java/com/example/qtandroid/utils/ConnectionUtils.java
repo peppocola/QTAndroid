@@ -19,7 +19,12 @@ public final class ConnectionUtils {
     }
 
     public static void openConnectionDialog(@NonNull final Context context) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        AlertDialog.Builder builder;
+        if (ThemeUtils.isDarkMode()) {
+            builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+        } else builder = new AlertDialog.Builder(context);
+
         builder
                 .setTitle(R.string.alertConnection)
                 .setMessage(R.string.alertConnectionMessage)
@@ -44,7 +49,11 @@ public final class ConnectionUtils {
     }
 
     public static void openConnectionDialogAbort(@NonNull final Context context) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        AlertDialog.Builder builder;
+        if (ThemeUtils.isDarkMode()) {
+            builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+        } else builder = new AlertDialog.Builder(context);
         builder
                 .setTitle(R.string.alertConnection)
                 .setMessage(R.string.alertConnectionMessage)

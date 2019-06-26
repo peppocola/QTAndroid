@@ -114,7 +114,10 @@ public class AskData extends AppCompatActivity {
                 tables.add(0, DEFAULT_SPINNER);
                 adapter.addAll(tables);
             } else {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder;
+                if (ThemeUtils.isDarkMode()) {
+                    builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+                } else builder = new AlertDialog.Builder(this);
                 builder
                         .setTitle(R.string.ServerUnreachableTitle)
                         .setMessage(R.string.ServerUnreachableMessage)

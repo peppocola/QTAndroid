@@ -40,4 +40,8 @@ public final class ThemeUtils {
         });
     }
 
+    public static boolean isDarkMode() {
+        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+    }
+
 }

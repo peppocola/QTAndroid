@@ -121,7 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder;
+        if (ThemeUtils.isDarkMode()) {
+            builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+        } else builder = new AlertDialog.Builder(this);
         builder
                 .setMessage(R.string.exit)
                 .setCancelable(true)
