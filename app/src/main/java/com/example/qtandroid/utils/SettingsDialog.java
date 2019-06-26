@@ -1,7 +1,6 @@
 package com.example.qtandroid.utils;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,11 +20,6 @@ public class SettingsDialog extends AppCompatDialogFragment {
 
     private EditText ip;
     private EditText port;
-    private Context context;
-
-    public SettingsDialog(Context context) {
-        this.context = context;
-    }
 
     @NonNull
     @Override
@@ -33,8 +27,8 @@ public class SettingsDialog extends AppCompatDialogFragment {
 
         androidx.appcompat.app.AlertDialog.Builder builder;
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
-        } else builder = new AlertDialog.Builder(context);
+            builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+        } else builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.settings_layout, null);
         builder.setView(view);
@@ -46,7 +40,7 @@ public class SettingsDialog extends AppCompatDialogFragment {
                 if (checkPort()) {
                     ConnectionHandler.getInstance().setPort(Integer.parseInt(port.getText().toString()));
                     dismiss();
-                } else Toast.makeText(context, "Porta non valida", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(getContext(), "Porta non valida", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("CHIUDI", new DialogInterface.OnClickListener() {

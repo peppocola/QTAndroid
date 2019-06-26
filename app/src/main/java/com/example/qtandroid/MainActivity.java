@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSettingsDialog(Context context) {
-        SettingsDialog settingsDialog = new SettingsDialog(context);
+        SettingsDialog settingsDialog = new SettingsDialog();
         settingsDialog.show(getSupportFragmentManager(), "SettingsDialog");
 
 
