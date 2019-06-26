@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.qtandroid.utils.ActivityUtils;
 import com.example.qtandroid.utils.ConnectionUtils;
+import com.example.qtandroid.utils.SettingsDialog;
 import com.example.qtandroid.utils.ThemeUtils;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             Contacts.openContacts(MainActivity.this);
             return true;
         } else if (item.getItemId() == R.id.settings) {
-            SettingsActivity.openSettings(MainActivity.this);
+            openSettingsDialog(MainActivity.this);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -163,6 +164,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         progressBar.setVisibility(View.INVISIBLE);
         super.onPostResume();
+
+    }
+
+    public void openSettingsDialog(Context context) {
+        SettingsDialog settingsDialog = new SettingsDialog(context);
+        settingsDialog.show(getSupportFragmentManager(), "SettingsDialog");
+
 
     }
 

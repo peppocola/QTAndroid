@@ -34,7 +34,7 @@ public class AskData extends AppCompatActivity {
     private boolean enabled = false;
     private AlertDialog alertDialog;
 
-    private static final String IP = "192.168.1.242";
+    private static final String IP = "paologas91.ddns.net";
     private static final int PORT = 8080;
 
     public static final String TYPE = "type";
@@ -101,13 +101,16 @@ public class AskData extends AppCompatActivity {
 
         ConnectionUtils.checkConnection(this);
         try {
-            if (!ConnectionHandler.getInstance().isConnected()) {
-                ConnectionHandler.getInstance().setAddress(IP);
-                ConnectionHandler.getInstance().setPort(PORT);
-                ConnectionHandler.getInstance().connect();
+            ConnectionHandler connectionHandler = ConnectionHandler.getInstance();
+            if (!connectionHandler.isConnected()) {
+                if (connectionHandler.getIp() == null || connectionHandler.getIp().equals("") || connectionHandler.getPort() == 0) {
+                    connectionHandler.setAddress(IP);
+                    connectionHandler.setPort(PORT);
+                }
+                connectionHandler.connect();
             }
-            if (ConnectionHandler.getInstance().isConnected()) {
-                LinkedList<String> tables = ConnectionHandler.getInstance().getTables();
+            if (connectionHandler.isConnected()) {
+                LinkedList<String> tables = connectionHandler.getTables();
                 tables.add(0, DEFAULT_SPINNER);
                 adapter.addAll(tables);
             } else {

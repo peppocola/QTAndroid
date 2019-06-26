@@ -57,6 +57,14 @@ public class ConnectionHandler {
 
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
     public void disconnect() {
         new Disconnect().execute();
     }
