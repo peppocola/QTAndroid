@@ -156,6 +156,7 @@ public class DisplayResults extends AppCompatActivity {
         } else {
             finish();
             AskData.openAskData(DisplayResults.this, bundle);
+
         }
 
         super.onBackPressed();

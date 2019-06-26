@@ -184,6 +184,7 @@ public class AskData extends AppCompatActivity {
                                 ConnectionHandler.getInstance().disconnect();
                             } else DisplayResults.openDisplayResults(context, bundle);
 
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
