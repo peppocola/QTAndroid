@@ -24,10 +24,7 @@ public class SettingsDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder;
-        if (ThemeUtils.isDarkMode()) {
-            builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
-        } else builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = ThemeUtils.getBuilder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.settings_layout, null);
         builder.setView(view);
@@ -69,6 +66,7 @@ public class SettingsDialog extends AppCompatDialogFragment {
 
         return builder.create();
     }
+
 
     private boolean checkPort() {
         String sPort = port.getText().toString();

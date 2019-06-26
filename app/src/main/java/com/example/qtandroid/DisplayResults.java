@@ -64,10 +64,7 @@ public class DisplayResults extends AppCompatActivity {
 
         if (isEmpty || isFull) {
 
-            AlertDialog.Builder builder;
-            if (ThemeUtils.isDarkMode()) {
-                builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-            } else builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = ThemeUtils.getBuilder(this);
             builder
                     .setTitle(title)
                     .setMessage(message)
@@ -94,10 +91,7 @@ public class DisplayResults extends AppCompatActivity {
             alertDialog.show();
         } else if (fileNotFound) {
 
-            AlertDialog.Builder builder;
-            if (ThemeUtils.isDarkMode()) {
-                builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-            } else builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = ThemeUtils.getBuilder(this);
             builder
                     .setTitle(title)
                     .setMessage(message)

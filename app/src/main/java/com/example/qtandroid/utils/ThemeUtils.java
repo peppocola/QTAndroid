@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -44,4 +45,11 @@ public final class ThemeUtils {
         return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
     }
 
+    public static AlertDialog.Builder getBuilder(Context context) {
+        AlertDialog.Builder builder;
+        if (ThemeUtils.isDarkMode()) {
+            builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+        } else builder = new AlertDialog.Builder(context);
+        return builder;
+    }
 }

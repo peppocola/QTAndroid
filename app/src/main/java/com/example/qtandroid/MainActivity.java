@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean isFileCluster = select.getCheckedRadioButtonId() == R.id.filecluster;
 
                 if (!(isNewCluster || isFileCluster)) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    final AlertDialog.Builder builder = ThemeUtils.getBuilder(MainActivity.this);
                     builder
                             .setMessage(R.string.noSelect)
                             .setCancelable(true)
@@ -121,10 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder;
-        if (ThemeUtils.isDarkMode()) {
-            builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-        } else builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = ThemeUtils.getBuilder(this);
         builder
                 .setMessage(R.string.exit)
                 .setCancelable(true)
