@@ -150,8 +150,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.contacts) {
-                Contacts.openContacts(MainActivity.this);
-                return true;
+            Contacts.openContacts(MainActivity.this);
+            return true;
+        } else if (item.getItemId() == R.id.settings) {
+            SettingsActivity.openSettings(MainActivity.this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
